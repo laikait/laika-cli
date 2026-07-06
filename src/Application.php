@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Laika\Cli;
 
 use Laika\Cli\Command\CommandInterface;
+use Laika\Cli\Command\ListAfterwareCommand;
 use Laika\Cli\Command\MakeRouteCommand;
 use Laika\Cli\Command\MakeMiddlewareCommand;
 use Laika\Cli\Command\MakeAfterwareCommand;
@@ -14,6 +15,12 @@ use Laika\Cli\Command\MakeTemplateCommand;
 use Laika\Cli\Command\MakeServiceCommand;
 use Laika\Cli\Command\MakeControllerCommand;
 use Laika\Cli\Command\ListCommand;
+use Laika\Cli\Command\ListControllerCommand;
+use Laika\Cli\Command\ListMiddlewareCommand;
+use Laika\Cli\Command\ListModelCommand;
+use Laika\Cli\Command\ListRouteCommand;
+use Laika\Cli\Command\ListSchemaCommand;
+use Laika\Cli\Command\ListTemplaeCommand;
 use Laika\Cli\Command\RemoveCommand;
 use Laika\Cli\Command\RenameCommand;
 use Laika\Cli\Command\RenameRouteCommand;
@@ -25,6 +32,7 @@ class Application
 
     public function __construct(protected string $basePath)
     {
+        // Make
         $this->register(new MakeRouteCommand());
         $this->register(new MakeMiddlewareCommand());
         $this->register(new MakeAfterwareCommand());
@@ -34,13 +42,16 @@ class Application
         $this->register(new MakeServiceCommand());
         $this->register(new MakeControllerCommand());
 
-        $this->register(new ListCommand('routes', 'lf-routes'));
-        $this->register(new ListCommand('middleware', 'app/Middleware'));
-        $this->register(new ListCommand('afterware', 'app/Afterware'));
-        $this->register(new ListCommand('models', 'app/Model'));
-        $this->register(new ListCommand('services', 'app/Service'));
-        $this->register(new ListCommand('controllers', 'app/Controller'));
+        // List
+        $this->register(new ListRouteCommand());
+        $this->register(new ListModelCommand());
+        $this->register(new ListSchemaCommand);
+        $this->register(new ListControllerCommand);
+        $this->register(new ListMiddlewareCommand);
+        $this->register(new ListAfterwareCommand);
+        $this->register(new ListTemplaeCommand);
 
+        // Remove
         $this->register(new RemoveCommand('route', 'lf-routes'));
         $this->register(new RemoveCommand('middleware', 'app/Middleware'));
         $this->register(new RemoveCommand('afterware', 'app/Afterware'));
