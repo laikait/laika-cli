@@ -20,6 +20,7 @@ use Laika\Cli\Command\ListMiddlewareCommand;
 use Laika\Cli\Command\ListModelCommand;
 use Laika\Cli\Command\ListRouteCommand;
 use Laika\Cli\Command\ListSchemaCommand;
+use Laika\Cli\Command\ListRelayCommand;
 use Laika\Cli\Command\ListTemplaeCommand;
 use Laika\Cli\Command\RemoveCommand;
 use Laika\Cli\Command\RenameCommand;
@@ -50,6 +51,7 @@ class Application
         $this->register(new ListMiddlewareCommand);
         $this->register(new ListAfterwareCommand);
         $this->register(new ListTemplaeCommand);
+        $this->register(new ListRelayCommand);
 
         // Remove
         $this->register(new RemoveCommand('route', 'lf-routes'));
