@@ -1,0 +1,24 @@
+<?php
+
+declare(strict_types=1);
+
+use Laika\Model\Schema\Schema;
+use Laika\Model\Schema\Blueprint;
+
+return new class {
+    public function up(): void
+    {
+        Schema::create('{{table}}', function (Blueprint $table) {
+            $table->id();
+            $table->string('uid')->unique();
+            $table->timestamps();
+            $table->enum('deleted', ['yes', 'no'])->default('no');
+            $table->timestamp('deleted_at')->nullable();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('{{table}}');
+    }
+};

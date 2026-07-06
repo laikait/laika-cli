@@ -1,0 +1,15 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Afterware;
+
+use Laika\Route\AfterwareInterface;
+
+class {{class}} implements AfterwareInterface
+{
+    public function terminate(array &$params, mixed $response): mixed
+    {
+        return $response;
+    }
+}
