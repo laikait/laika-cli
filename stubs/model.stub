@@ -1,0 +1,17 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Model;
+
+use Laika\Model\Model;
+
+class {{class}} extends Model
+{
+    protected string $table = '{{table}}';
+    protected string $id = 'id';
+    protected string $uid = 'uid';
+    protected bool $softDelete = true;
+    protected string $deletedAtColumn = 'deleted_at';
+    protected array $casts = [];
+}

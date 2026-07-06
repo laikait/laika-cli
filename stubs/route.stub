@@ -1,0 +1,9 @@
+<?php
+
+declare(strict_types=1);
+
+use Laika\Core\Route\Router;
+
+Router::group('/{{name}}', function () {
+    Router::get('/', '{{name}}Controller@index')->name('{{name}}.index');
+});
