@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
-use finfo;
-
 use Laika\Service\Infra;
 
 class ListMiddlewareCommand implements CommandInterface

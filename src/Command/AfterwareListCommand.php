@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
-use finfo;
-
 use Laika\Service\Infra;
 
-class ListAfterwareCommand implements CommandInterface
+class AfterwareListCommand implements CommandInterface
 {
     public function signature(): string
     {
@@ -22,19 +20,26 @@ class ListAfterwareCommand implements CommandInterface
 
     public function handle(array $args, string $basePath): int
     {
-        if (count($args) > 1) {
+        if (count($args) != 0) {
             echo "Usage: php laika list:afterware";
-            return 0;
+            return 1;
         }
 
         $total = 0;
 
-        $head = sprintf("%-4s | %-50s\n", '# SL', '# AFTERWARE CLASS');
-        echo str_repeat('-', strlen($head)) . "\n";
+        $afterwares = Infra::getAfterwareClasses();
+
+        if (empty($afterwares)) {
+            Message::info("No Afterwares Found!");
+            return 0;
+        }
+
+        $head = sprintf("%-4s | %-50s\n", Message::txt_yellow('# SL'), Message::txt_yellow('# AFTERWARE CLASS'));
+        echo "\n" . str_repeat('-', strlen($head)) . "\n";
         echo $head;
         echo str_repeat('-', strlen($head)) . "\n";
 
-        foreach (Infra::getAfterwareClasses() as $c) {
+        foreach ($afterwares as $c) {
             $total++;
             printf("%-4s | %-50s\n", $total, $c);
         }

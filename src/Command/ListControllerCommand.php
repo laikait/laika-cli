@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
-use finfo;
-
 use Laika\Service\Infra;
 
 class ListControllerCommand implements CommandInterface
@@ -24,7 +22,7 @@ class ListControllerCommand implements CommandInterface
     {
         if (count($args) > 1) {
             echo "Usage: php laika list:controller";
-            return 0;
+            return 1;
         }
 
         $total = 0;
