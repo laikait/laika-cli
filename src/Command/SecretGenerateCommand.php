@@ -47,7 +47,7 @@ class SecretGenerateCommand implements CommandInterface
 
         try {
             Config::set('secret', 'key', bin2hex(random_bytes($byte)));
-            Message::success("Secret Key Generated Successfully");
+            Message::success("{$byte} Byte Secret Key Generated Successfully");
         } catch (\Throwable $th) {
             Message::error($th->getMessage());
             return 1;

@@ -6,16 +6,16 @@ namespace Laika\Cli\Command;
 
 use Laika\Cli\Stub;
 
-class MakeMiddlewareCommand implements CommandInterface
+class RouteMakeCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'make:middleware';
+        return 'make:route';
     }
 
     public function description(): string
     {
-        return 'Create a new middleware class';
+        return 'Create a new route file in lf-routes';
     }
 
     public function handle(array $args, string $basePath): int
@@ -23,19 +23,19 @@ class MakeMiddlewareCommand implements CommandInterface
         $name = $args[0] ?? null;
 
         if (!$name) {
-            fwrite(STDERR, "Usage: laika make:middleware <Name>\n");
+            fwrite(STDERR, "Usage: laika make:route <name>\n");
             return 1;
         }
 
-        $path = $basePath . "/app/Middleware/{$name}.php";
+        $path = $basePath . "/lf-routes/{$name}.php";
 
-        $content = Stub::render('middleware', [
-            'class' => $name,
+        $content = Stub::render('route', [
+            'name' => $name,
         ]);
 
         Stub::write($path, $content);
 
-        echo "Middleware created: app/Middleware/{$name}.php\n";
+        echo "Route created: lf-routes/{$name}.php\n";
         return 0;
     }
 }

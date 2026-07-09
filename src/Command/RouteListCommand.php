@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
-use Laika\Route\Handler;
 use Laika\Route\Url;
+use Laika\Route\Handler;
 
-class ListRouteCommand implements CommandInterface
+class RouteListCommand implements CommandInterface
 {
     public function signature(): string
     {
@@ -21,40 +21,41 @@ class ListRouteCommand implements CommandInterface
 
     public function handle(array $args, string $basePath): int
     {
-        $dir = $basePath . '/lf-routes';
-
-        if (!is_dir($dir)) {
-            echo "No routes found.\n";
-            return 0;
+        if (count($args) > 0) {
+            echo "Usage: php laika list:route";
+            return 1;
         }
+
+        $dir = $basePath . '/lf-routes';
 
         // Load Routes
         Url::loadRoutes($dir);
 
         // Get Method
-        $method = null;
+        $method = Argument::getValue('--method', $args);
 
-        foreach (array_slice($args, 1) as $arg) {
-            if (str_starts_with($arg, '--method=')) {
-                $method = substr($arg, 9);
-            }
-        }
         $routes = $method ? [strtoupper($method) => Handler::getOnlyRoutes($method)] : Handler::getRoutes();
+
+        // Check Route Exists
+        if (empty($routes)) {
+            Message::info('No Routes Found.');
+            return 0;
+        }
+
         $total = 0;
 
-        $head = sprintf("%-8s | %-30s | %-40s | %-40s\n", '# METHOD', '# URI', '# CONTROLLER', '# NAME');
+        $head = sprintf("%-8s | %-30s | %-40s | %-40s\n", '# METHOD', '# URI', '# RESPONSE', '# NAME');
         echo str_repeat('-', strlen($head)) . "\n";
         echo $head;
         echo str_repeat('-', strlen($head)) . "\n";
 
         foreach ($routes as $method => $uris) {
             foreach ($uris as $uri => $data) {
-                $controller = is_string($data['controller'])
-                    ? $data['controller']
-                    : (is_array($data['controller']) ? implode('@', $data['controller']) : 'Closure');
+                $response = is_string($data['response'])
+                    ? $data['response']
+                    : (is_array($data['response']) ? implode('@', $data['response']) : 'Closure');
 
-                printf("%-8s | %-30s | %-40s | %-40s\n", $method, $uri, $controller, $data['name']);
-                // echo str_repeat('-', strlen($head)) . "\n";
+                printf("%-8s | %-30s | %-40s | %-40s\n", $method, $uri, $response, $data['name'] ?? '----');
                 $total++;
             }
         }

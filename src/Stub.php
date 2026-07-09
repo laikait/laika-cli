@@ -17,15 +17,19 @@ class Stub
         return file_get_contents($path);
     }
 
+    /**
+     * Render Stub
+     * @param string $name Stub Name
+     * @param array<string,string> $replacements
+     */
     public static function render(string $name, array $replacements): string
     {
         $content = static::load($name);
-
-        foreach ($replacements as $key => $value) {
-            $content = str_replace('{{' . $key . '}}', $value, $content);
-        }
-
-        return $content;
+        return str_replace(
+            array_map( fn ($k) => "{{{$k}}}", array_keys($replacements)),
+            array_values($replacements),
+            $content
+        );
     }
 
     public static function write(string $path, string $content): void

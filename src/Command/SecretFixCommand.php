@@ -43,7 +43,7 @@ class SecretFixCommand implements CommandInterface
         // Ceate if Secret File Doesn't Exist
         if (!Config::has('secret')) {
             Config::create('secret', ['key' => bin2hex(random_bytes($byte))]);
-            Message::success("Secret Key Was Unavailable. New Key Generated.");
+            Message::success("{$byte} Byte Secret Key Generated.");
             return 0;
         }
 
@@ -51,7 +51,7 @@ class SecretFixCommand implements CommandInterface
         $key = trim((string) Config::get('secret', 'key'));
         if (!$key || (strlen($key) != $byte * 2)) {
             Config::set('secret', 'key', bin2hex(random_bytes($byte)));
-            Message::success("Secret Key Regenerated Successfully");
+            Message::success("{$byte} Byte Secret Key Regenerated Successfully");
             return 0;
         }
 

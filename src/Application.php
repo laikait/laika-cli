@@ -6,24 +6,22 @@ namespace Laika\Cli;
 
 use Laika\Cli\Command\CommandInterface;
 use Laika\Cli\Command\AfterwareListCommand;
-use Laika\Cli\Command\MakeRouteCommand;
-use Laika\Cli\Command\MakeMiddlewareCommand;
+use Laika\Cli\Command\RouteListCommand;
+use Laika\Cli\Command\RouteMakeCommand;
+use Laika\Cli\Command\PipelineMakeCommand;
+use Laika\Cli\Command\PipelineRenameCommand;
 use Laika\Cli\Command\MakeAfterwareCommand;
 use Laika\Cli\Command\MakeModelCommand;
 use Laika\Cli\Command\MakeSchemaCommand;
 use Laika\Cli\Command\MakeTemplateCommand;
 use Laika\Cli\Command\MakeServiceCommand;
 use Laika\Cli\Command\MakeControllerCommand;
-// use Laika\Cli\Command\ListCommand;
 use Laika\Cli\Command\ListControllerCommand;
-use Laika\Cli\Command\ListMiddlewareCommand;
+use Laika\Cli\Command\PipelineListCommand;
 use Laika\Cli\Command\ListModelCommand;
-use Laika\Cli\Command\ListRouteCommand;
 use Laika\Cli\Command\ListSchemaCommand;
 use Laika\Cli\Command\ListRelayCommand;
 use Laika\Cli\Command\ListTemplateCommand;
-// use Laika\Cli\Command\RemoveCommand;
-// use Laika\Cli\Command\RenameCommand;
 use Laika\Cli\Command\RenameRouteCommand;
 use Laika\Cli\Command\SecretFixCommand;
 use Laika\Cli\Command\SecretGenerateCommand;
@@ -36,7 +34,7 @@ class Application
     public function __construct(protected string $basePath)
     {
         // Service
-        $this->register(new ListRelayCommand);
+        $this->register(new ListRelayCommand); // Done
         $this->register(new MakeServiceCommand());
 
         // Model
@@ -47,9 +45,10 @@ class Application
         $this->register(new ListSchemaCommand);
         $this->register(new MakeSchemaCommand());
 
-        // Middleware
-        $this->register(new ListMiddlewareCommand);
-        $this->register(new MakeMiddlewareCommand());
+        // Pipeline
+        $this->register(new PipelineListCommand); // Done
+        $this->register(new PipelineMakeCommand()); // Done
+        $this->register(new PipelineRenameCommand()); // Done
 
         // Afterware
         $this->register(new AfterwareListCommand);
@@ -64,12 +63,12 @@ class Application
         $this->register(new MakeTemplateCommand());
 
         // Route
-        $this->register(new ListRouteCommand());
-        $this->register(new MakeRouteCommand());
+        $this->register(new RouteListCommand()); // Done
+        $this->register(new RouteMakeCommand());
 
         // Secret
-        $this->register(new SecretGenerateCommand());
-        $this->register(new SecretFixCommand());
+        $this->register(new SecretGenerateCommand()); // Done
+        $this->register(new SecretFixCommand()); // Done
     }
 
     protected function register(CommandInterface $command): void
