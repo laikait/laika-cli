@@ -21,7 +21,7 @@ class ListSchemaCommand implements CommandInterface
     public function handle(array $args, string $basePath): int
     {
         if (count($args) > 1) {
-            echo "Usage: php laika list:schema";
+            Message::suggestion($this->command());
             return 0;
         }
 
@@ -41,5 +41,24 @@ class ListSchemaCommand implements CommandInterface
         echo "Total: {$total}\n";
 
         return 0;
+    }
+
+    public function command(): string
+    {
+        return "php laika list:schema";
+    }
+
+    public function help(): string
+    {
+        return <<<HELP
+        SCHEMA LIST COMMAND
+
+            COMMAND     :   {$this->command()}
+
+            INPUTS      :   No inputs available
+
+            PARAMETERS  :   No parameters available
+
+        HELP;
     }
 }

@@ -21,7 +21,7 @@ class PipelineListCommand implements CommandInterface
     public function handle(array $args, string $basePath): int
     {
         if (count($args) > 0) {
-            Message::error("Usage: php laika list:pipeline");
+            Message::suggestion($this->command());
             return 1;
         }
 
@@ -49,5 +49,25 @@ class PipelineListCommand implements CommandInterface
         echo "Total: {$total}\n";
 
         return 0;
+    }
+
+    public function command(): string
+    {
+        return "php laika list:pipeline";
+    }
+
+    public function help(): string
+    {
+        return <<<HELP
+        PIPELINE MAKE COMMAND
+
+            COMMAND     :   {$this->command()}
+
+            INPUTS      :
+                name    :   Pipeline name to make
+
+            PARAMETERS  :   No parameters available
+
+        HELP;
     }
 }

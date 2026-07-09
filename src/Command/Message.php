@@ -200,4 +200,14 @@ class Message
     {
         echo "\n" . self::txt_yellow('[WARNING]') . " {$message}\n";
     }
+
+    /**
+     * @param string $message
+     * This method is used to print informational messages to the console.
+     * @return void
+     */
+    public static function suggestion(string $message): void
+    {
+        echo "\n" . self::txt_cyan('[SUGGESTION]') . " {$message}\n";
+    }
 }

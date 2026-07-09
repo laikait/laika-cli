@@ -37,4 +37,24 @@ class MakeTemplateCommand implements CommandInterface
         echo "Template created: resources/views/{$name}.twig\n";
         return 0;
     }
+
+    public function command(): string
+    {
+        return "php laika make:template <name>";
+    }
+
+    public function help(): string
+    {
+        return <<<HELP
+        TEMPLATE MAKE COMMAND
+
+            COMMAND     :   {$this->command()}
+
+            INPUTS      :
+                name    :   Template name to make
+
+            PARAMETERS  :   No parameters available
+
+        HELP;
+    }
 }

@@ -40,4 +40,24 @@ class MakeSchemaCommand implements CommandInterface
         echo "Schema created: database/migrations/{$timestamp}_create_{$table}_table.php\n";
         return 0;
     }
+
+    public function command(): string
+    {
+        return "php laika make:schema <name>";
+    }
+
+    public function help(): string
+    {
+        return <<<HELP
+        SCHEMA MAKE COMMAND
+
+            COMMAND     :   {$this->command()}
+
+            INPUTS      :
+                name    :   Schema name to make
+
+            PARAMETERS  :   No parameters available
+
+        HELP;
+    }
 }

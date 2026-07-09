@@ -57,4 +57,24 @@ class MakeModelCommand implements CommandInterface
 
         return 0;
     }
+
+    public function command(): string
+    {
+        return "php laika make:model <name>";
+    }
+
+    public function help(): string
+    {
+        return <<<HELP
+        MODEL MAKE COMMAND
+
+            COMMAND     :   {$this->command()}
+
+            INPUTS      :
+                name    :   Template name to make
+
+            PARAMETERS  :   No parameters available
+
+        HELP;
+    }
 }

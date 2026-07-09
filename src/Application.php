@@ -22,6 +22,7 @@ use Laika\Cli\Command\ListModelCommand;
 use Laika\Cli\Command\ListSchemaCommand;
 use Laika\Cli\Command\ListRelayCommand;
 use Laika\Cli\Command\ListTemplateCommand;
+use Laika\Cli\Command\PipelineRemoveCommand;
 use Laika\Cli\Command\RenameRouteCommand;
 use Laika\Cli\Command\SecretFixCommand;
 use Laika\Cli\Command\SecretGenerateCommand;
@@ -49,6 +50,7 @@ class Application
         $this->register(new PipelineListCommand); // Done
         $this->register(new PipelineMakeCommand()); // Done
         $this->register(new PipelineRenameCommand()); // Done
+        $this->register(new PipelineRemoveCommand()); // Done
 
         // Afterware
         $this->register(new AfterwareListCommand);
@@ -91,16 +93,18 @@ class Application
         try {
             return $this->commands[$signature]->handle($args, $this->basePath);
         } catch (\Throwable $e) {
-            fwrite(STDERR, "Error: {$e->getMessage()}\n");
+            Command\Message::error($e->getMessage());
             return 1;
         }
     }
 
     protected function help(): void
     {
-        echo "Laika CLI\n\nAvailable commands:\n";
+        echo "\n" . Command\Message::txt_yellow(' LAIKA CLI AVAILABLE COMMANDS ') . "\n";
+        echo "------------------------------------------------------------------------------------\n";
         foreach ($this->commands as $signature => $command) {
-            printf("  %-20s %s\n", $signature, $command->description());
+            printf("  %s\n", $command->help());
+            echo "------------------------------------------------------------------------------------\n";
         }
     }
 }

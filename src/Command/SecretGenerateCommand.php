@@ -22,7 +22,7 @@ class SecretGenerateCommand implements CommandInterface
     public function handle(array $args, string $basePath): int
     {
         if (count($args) > 1) {
-            Message::info("Usage: php laika generate:secret [--byte=<number>]");
+            Message::suggestion($this->command());
             return 1;
         }
 
@@ -54,5 +54,24 @@ class SecretGenerateCommand implements CommandInterface
         }
 
         return 0;
+    }
+
+    public function command(): string
+    {
+        return "php laika generate:secret [--byte=32]";
+    }
+
+    public function help(): string
+    {
+        return <<<HELP
+        SECRET GENERATE COMMAND
+
+            COMMAND     :   {$this->command()}
+
+            INPUTS      :   No Inputs Available
+
+            PARAMETERS  :
+                --byte  :   Number of bytes to generate. Default is 32. Range 16 to 64
+        HELP;
     }
 }

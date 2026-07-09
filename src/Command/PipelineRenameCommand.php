@@ -19,7 +19,7 @@ class PipelineRenameCommand implements CommandInterface
     public function handle(array $args, string $basePath): int
     {
         if (count($args) != 2) {
-            Message::error("Usage: php laika rename:pipeline [--old=name --new=name]");
+            Message::suggestion($this->command());
             return 1;
         }
 
@@ -27,9 +27,9 @@ class PipelineRenameCommand implements CommandInterface
         $old = Argument::getValue('--old', $args);
         $new = Argument::getValue('--new', $args);
 
-        // Check Onld & New Pipeline Exists
+        // Check Old & New Pipeline Exists
         if (!$old || !$new) {
-            Message::error("Usage: php laika rename:pipeline [--old=name --new=name]");
+            Message::error("Usage: php laika rename:pipeline <--old=name --new=name>");
             return 1;
         }
 
@@ -67,5 +67,26 @@ class PipelineRenameCommand implements CommandInterface
         }
 
         return 0;
+    }
+
+    public function command(): string
+    {
+        return "php laika rename:pipeline <--old=name> <--new=name>";
+    }
+
+    public function help(): string
+    {
+        return <<<HELP
+        PIPELINE RENAME COMMAND
+
+            COMMAND     :   {$this->command()}
+
+            INPUTS      :   No inputs available
+
+            PARAMETERS  :
+                --old   :   Old Pipeline Name
+                --new   :   Nes Pipeline Name
+
+        HELP;
     }
 }

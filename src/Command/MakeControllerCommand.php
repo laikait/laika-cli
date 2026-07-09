@@ -10,12 +10,12 @@ class MakeControllerCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'make:controller';
+        return 'make:response';
     }
 
     public function description(): string
     {
-        return 'Create a new controller class';
+        return 'Create a new response class';
     }
 
     public function handle(array $args, string $basePath): int
@@ -36,5 +36,25 @@ class MakeControllerCommand implements CommandInterface
         Stub::write($path, $content);
         echo "Controller created: app/Controller/{$name}.php\n";
         return 0;
+    }
+
+    public function command(): string
+    {
+        return "php laika make:response <name>";
+    }
+
+    public function help(): string
+    {
+        return <<<HELP
+        RESPONSE MAKE COMMAND
+
+            COMMAND     :   {$this->command()}
+
+            INPUTS      :
+                name    :   Response name to make
+
+            PARAMETERS  :   No parameters available
+
+        HELP;
     }
 }

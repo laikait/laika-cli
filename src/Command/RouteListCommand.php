@@ -22,7 +22,7 @@ class RouteListCommand implements CommandInterface
     public function handle(array $args, string $basePath): int
     {
         if (count($args) > 0) {
-            echo "Usage: php laika list:route";
+            Message::suggestion($this->command());
             return 1;
         }
 
@@ -63,5 +63,24 @@ class RouteListCommand implements CommandInterface
         echo "Total: {$total}\n";
 
         return 0;
+    }
+
+    public function command(): string
+    {
+        return "php laika list:route";
+    }
+
+    public function help(): string
+    {
+        return <<<HELP
+        SECRET GENERATE COMMAND
+
+            COMMAND     :   {$this->command()}
+
+            INPUTS      :   No inputs Available
+
+            PARAMETERS  :   No parameters available
+
+        HELP;
     }
 }

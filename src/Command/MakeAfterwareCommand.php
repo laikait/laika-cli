@@ -10,12 +10,12 @@ class MakeAfterwareCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'make:afterware';
+        return 'make:filter';
     }
 
     public function description(): string
     {
-        return 'Create a new afterware class';
+        return 'Create a new filter class';
     }
 
     public function handle(array $args, string $basePath): int
@@ -37,5 +37,25 @@ class MakeAfterwareCommand implements CommandInterface
 
         echo "Afterware created: app/Afterware/{$name}.php\n";
         return 0;
+    }
+
+    public function command(): string
+    {
+        return "php laika make:filter <name>";
+    }
+
+    public function help(): string
+    {
+        return <<<HELP
+        FILTER MAKE COMMAND
+
+            COMMAND     :   {$this->command()}
+
+            INPUTS      :
+                name    :   Filter name to make
+
+            PARAMETERS  :   No parameters available
+
+        HELP;
     }
 }

@@ -43,4 +43,23 @@ class RenameRouteCommand implements CommandInterface
         echo "Renamed: {$old} -> {$new}\n";
         return 0;
     }
+
+    public function command(): string
+    {
+        return "php laika rename:route";
+    }
+
+    public function help(): string
+    {
+        return <<<HELP
+        ROUTE RENAME COMMAND
+
+            COMMAND     :   {$this->command()}
+
+            INPUTS      :   No inputs available
+
+            PARAMETERS  :   No parameters available
+
+        HELP;
+    }
 }

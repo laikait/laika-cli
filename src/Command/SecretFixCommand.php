@@ -22,7 +22,7 @@ class SecretFixCommand implements CommandInterface
     public function handle(array $args, string $basePath): int
     {
         if (count($args) > 1) {
-            Message::info("Usage: php laika fix:secret [--byte=<number>]");
+            Message::suggestion($this->command());
             return 1;
         }
 
@@ -58,5 +58,24 @@ class SecretFixCommand implements CommandInterface
         Message::info("Secret key remains unchanged");
 
         return 0;
+    }
+
+    public function command(): string
+    {
+        return "php laika fix:secret [--byte=number]";
+    }
+
+    public function help(): string
+    {
+        return <<<HELP
+        SECRET FIX COMMAND
+
+            COMMAND     :   {$this->command()}
+
+            INPUTS      :   No Inputs Available
+
+            PARAMETERS  :
+                --byte  :   Number of bytes to generate. Default is 32. Range 16 to 64
+        HELP;
     }
 }

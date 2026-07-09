@@ -21,7 +21,7 @@ class PipelineMakeCommand implements CommandInterface
     public function handle(array $args, string $basePath): int
     {
         if (count($args) != 1) {
-            Message::error("Usage: php laika make:pipeline <name>");
+            Message::suggestion($this->commandSample());
             return 1;
         }
 
@@ -54,5 +54,25 @@ class PipelineMakeCommand implements CommandInterface
             return 1;
         }
         return 0;
+    }
+
+    public function command(): string
+    {
+        return "php laika make:pipeline <name>";
+    }
+
+    public function help(): string
+    {
+        return <<<HELP
+        PIPELINE MAKE COMMAND
+
+            COMMAND     :   {$this->command()}
+
+            INPUTS      :
+                name    :   Pipeline name to make
+
+            PARAMETERS  :   No parameters available
+
+        HELP;
     }
 }

@@ -38,4 +38,23 @@ class RouteMakeCommand implements CommandInterface
         echo "Route created: lf-routes/{$name}.php\n";
         return 0;
     }
+
+    public function command(): string
+    {
+        return "php laika make:route <name>";
+    }
+
+    public function help(): string
+    {
+        return <<<HELP
+        ROUTE MAKE COMMAND
+
+            COMMAND     :   {$this->command()}
+
+            INPUTS      :
+                name    :   Name of the route
+            
+            PARAMETERS  :   No parameters available
+        HELP;
+    }
 }

@@ -37,4 +37,24 @@ class MakeServiceCommand implements CommandInterface
         echo "Service created: app/Service/{$name}.php\n";
         return 0;
     }
+
+    public function command(): string
+    {
+        return "php laika make:service <name>";
+    }
+
+    public function help(): string
+    {
+        return <<<HELP
+        SERVICE MAKE COMMAND
+
+            COMMAND     :   {$this->command()}
+
+            INPUTS      :
+                name    :   Service name to make
+
+            PARAMETERS  :   No parameters available
+
+        HELP;
+    }
 }

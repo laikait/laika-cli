@@ -21,8 +21,8 @@ class ListModelCommand implements CommandInterface
     public function handle(array $args, string $basePath): int
     {
         if (count($args) > 1) {
-            echo "Usage: php laika list:model";
-            return 0;
+            Message::suggestion($this->command());
+            return 1;
         }
 
         $total = 0;
@@ -41,5 +41,24 @@ class ListModelCommand implements CommandInterface
         echo "Total: {$total}\n";
 
         return 0;
+    }
+
+    public function command(): string
+    {
+        return "php laika list:model";
+    }
+
+    public function help(): string
+    {
+        return <<<HELP
+        MODEL LIST COMMAND
+
+            COMMAND     :   {$this->command()}
+
+            INPUTS      :   No inputs available
+
+            PARAMETERS  :   No parameters available
+
+        HELP;
     }
 }
