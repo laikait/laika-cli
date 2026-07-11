@@ -27,15 +27,15 @@ class PipelineRenameCommand implements CommandInterface
         $old = Argument::getValue('--old', $args);
         $new = Argument::getValue('--new', $args);
 
-        // Check Old & New Pipeline Exists
-        if (!$old || !$new) {
-            Message::error("Usage: php laika rename:pipeline <--old=name --new=name>");
+        // Check Old & New Names are Not Empty
+        if (empty($old) || empty($new)) {
+            Message::error("Old/New name should not be empty!");
             return 1;
         }
 
         // Check Valid Names
         if (!preg_match('/^[a-z_]+$/i', $old) || !preg_match('/^[a-z_]+$/i', $old)) {
-            Message::error("Pipeline Name Should Contain Characters Only!");
+            Message::error("Old/New Name Should Contain Characters Only!");
             return 1;
         }
 
@@ -44,13 +44,13 @@ class PipelineRenameCommand implements CommandInterface
 
         // Check Old Pipeline Exists
         if (!is_file($oldPath)) {
-            Message::error("Pipeline [$old] Doesn't Exists!");
+            Message::error("Pipeline [{$old}] Doesn't Exists!");
             return 1;
         }
 
         // Check New Pipeline Doesn't Exists
         if (is_file($newPath)) {
-            Message::error("Pipeline [$new] Already Exists!");
+            Message::error("Pipeline [{$new}] Already Exists!");
             return 1;
         }
 
@@ -84,8 +84,8 @@ class PipelineRenameCommand implements CommandInterface
             INPUTS      :   No inputs available
 
             PARAMETERS  :
-                --old   :   Old Pipeline Name
-                --new   :   Nes Pipeline Name
+                --old   :   (Required) old pipeline name
+                --new   :   (Required) new pipeline name
 
         HELP;
     }

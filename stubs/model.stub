@@ -20,10 +20,10 @@ class {{class}} extends Model
     protected string $table = '{{table}}';
 
     /** @var string Primary Column Name */
-    protected string $id = '{id}';
+    protected string $id = '{{id}}';
 
     /** @var string UID Column Name */
-    protected string $uid = '{uid}';
+    protected string $uid = '{{uid}}';
 
     /** @var bool Soft Delete */
     protected bool $softDelete = false;

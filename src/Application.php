@@ -23,6 +23,8 @@ use Laika\Cli\Command\ModelListCommand;
 use Laika\Cli\Command\ListSchemaCommand;
 use Laika\Cli\Command\RelayListCommand;
 use Laika\Cli\Command\ListTemplateCommand;
+use Laika\Cli\Command\ModelRemoveCommand;
+use Laika\Cli\Command\ModelRenameCommand;
 use Laika\Cli\Command\PipelineRemoveCommand;
 use Laika\Cli\Command\RenameRouteCommand;
 use Laika\Cli\Command\SecretFixCommand;
@@ -44,6 +46,8 @@ class Application
         // Model
         $this->register(new ModelListCommand()); // Done
         $this->register(new ModelMakeCommand()); // Done
+        $this->register(new ModelRemoveCommand()); // Done
+        $this->register(new ModelRenameCommand()); // Done
         
         // Schema
         $this->register(new ListSchemaCommand);
