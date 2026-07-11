@@ -6,7 +6,7 @@ namespace Laika\Cli\Command;
 
 use Laika\Service\Infra;
 
-class ListRelayCommand implements CommandInterface
+class RelayListCommand implements CommandInterface
 {
     public function signature(): string
     {

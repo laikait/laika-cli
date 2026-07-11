@@ -1,0 +1,30 @@
+<?php
+/**
+ * Laika Framework
+ * Author: Showket Ahmed
+ * Email: riyadhtayf@gmail.com
+ * License: MIT
+ * This file is part of the Laika PHP Framework.
+ * For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+ */
+ 
+declare(strict_types=1);
+
+namespace App\Afterware;
+
+use Laika\Route\AfterwareInterface;
+
+class {{class}} implements AfterwareInterface
+{
+    /**
+     * @param callable $next
+     * @param ?string $response
+     * @param array $params
+     */
+    public function terminate(callable $next, ?string $response, array &$params): mixed
+    {
+        // return $next($response, false); Ignore filter chain
+        // return '<h1>Down for maintenance</h1>'; Ignore filter chain & replace response
+        $next($response); // Continue to the next filter
+    }
+}

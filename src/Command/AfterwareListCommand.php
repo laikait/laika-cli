@@ -21,7 +21,7 @@ class AfterwareListCommand implements CommandInterface
     public function handle(array $args, string $basePath): int
     {
         if (count($args) != 0) {
-            Message::info($this->commandSample());
+            Message::info($this->command());
             return 1;
         }
 

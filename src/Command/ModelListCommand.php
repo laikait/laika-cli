@@ -6,7 +6,7 @@ namespace Laika\Cli\Command;
 
 use Laika\Service\Infra;
 
-class ListModelCommand implements CommandInterface
+class ModelListCommand implements CommandInterface
 {
     public function signature(): string
     {
@@ -20,8 +20,15 @@ class ListModelCommand implements CommandInterface
 
     public function handle(array $args, string $basePath): int
     {
-        if (count($args) > 1) {
+        if (count($args) != 0) {
             Message::suggestion($this->command());
+            return 1;
+        }
+
+        $models = Infra::getModelClasses();
+
+        if (empty($models)) {
+            Message::info("No models found");
             return 1;
         }
 
@@ -32,8 +39,7 @@ class ListModelCommand implements CommandInterface
         echo $head;
         echo str_repeat('-', strlen($head)) . "\n";
 
-        foreach (Infra::getModelClasses() as $t => $c) {
-
+        foreach ($models as $t => $c) {
                 printf("%-20s | %-50s\n", $t, $c);
                 $total++;
         }

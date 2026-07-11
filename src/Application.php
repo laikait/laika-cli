@@ -6,26 +6,28 @@ namespace Laika\Cli;
 
 use Laika\Cli\Command\CommandInterface;
 use Laika\Cli\Command\AfterwareListCommand;
+use Laika\Cli\Command\AppSyncCommand;
 use Laika\Cli\Command\RouteListCommand;
 use Laika\Cli\Command\RouteMakeCommand;
 use Laika\Cli\Command\PipelineMakeCommand;
 use Laika\Cli\Command\PipelineRenameCommand;
 use Laika\Cli\Command\MakeAfterwareCommand;
-use Laika\Cli\Command\MakeModelCommand;
+use Laika\Cli\Command\ModelMakeCommand;
 use Laika\Cli\Command\MakeSchemaCommand;
 use Laika\Cli\Command\MakeTemplateCommand;
-use Laika\Cli\Command\MakeServiceCommand;
+use Laika\Cli\Command\ServiceMakeCommand;
 use Laika\Cli\Command\MakeControllerCommand;
 use Laika\Cli\Command\ListControllerCommand;
 use Laika\Cli\Command\PipelineListCommand;
-use Laika\Cli\Command\ListModelCommand;
+use Laika\Cli\Command\ModelListCommand;
 use Laika\Cli\Command\ListSchemaCommand;
-use Laika\Cli\Command\ListRelayCommand;
+use Laika\Cli\Command\RelayListCommand;
 use Laika\Cli\Command\ListTemplateCommand;
 use Laika\Cli\Command\PipelineRemoveCommand;
 use Laika\Cli\Command\RenameRouteCommand;
 use Laika\Cli\Command\SecretFixCommand;
 use Laika\Cli\Command\SecretGenerateCommand;
+use Laika\Cli\Command\ServiceRemoveCommand;
 
 class Application
 {
@@ -35,12 +37,13 @@ class Application
     public function __construct(protected string $basePath)
     {
         // Service
-        $this->register(new ListRelayCommand); // Done
-        $this->register(new MakeServiceCommand());
+        $this->register(new RelayListCommand); // Done
+        $this->register(new ServiceMakeCommand()); // Done
+        $this->register(new ServiceRemoveCommand()); // Done
 
         // Model
-        $this->register(new ListModelCommand());
-        $this->register(new MakeModelCommand());
+        $this->register(new ModelListCommand()); // Done
+        $this->register(new ModelMakeCommand()); // Done
         
         // Schema
         $this->register(new ListSchemaCommand);
@@ -71,6 +74,9 @@ class Application
         // Secret
         $this->register(new SecretGenerateCommand()); // Done
         $this->register(new SecretFixCommand()); // Done
+
+        // Sync
+        $this->register(new AppSyncCommand()); // Done
     }
 
     protected function register(CommandInterface $command): void

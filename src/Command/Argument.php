@@ -27,15 +27,58 @@ class Argument
      * Get Argumment Boolean Value. Example: Get Value From --enable
      * @param string $key Key Name to Get Value
      * @param array $args Input Arguments
+     * @param bool $default Default Value
      * @return bool
      */
-    public static function getBool(string $key, array $args): bool
+    public static function getBool(string $key, array $args, bool $default = false): bool
     {
-        if (!str_starts_with($key, '--')) return false;
+        if (!str_starts_with($key, '--')) return $default;
 
         foreach ($args as $arg) {
             if ($arg === $key) return true;
         }
-        return false;
+        return $default;
+    }
+
+    /**
+     * Match Command Key
+     * @param ?string $key Command Key To Match
+     * @return array{success:bool,message:?string}
+     */
+    public static function match(?string $key, array $list): array
+    {
+        // 1. Exact match
+        if (in_array(strtolower((string) $key), $list)) {
+            return [
+                'success' => true,
+                'message' => "Command [{$key}] found",
+            ];
+        }
+
+        // 2. Find Closest Key
+        $closestKey = null;
+        $shortestDistance = PHP_INT_MAX;
+
+        foreach ($list as $existingKey) {
+            $distance = levenshtein($key, $existingKey);
+            if ($distance < $shortestDistance) {
+                $shortestDistance = $distance;
+                $closestKey = $existingKey;
+            }
+        }
+
+        // 3. Decide If Suggestion Is Good Enough
+        // You Can Tune The Threshold (here <= 2)
+        if ($shortestDistance <= 3) {
+            return [
+                'success' => false,
+                'message' => "Laika suggested command:\n\n\t '{$closestKey}'\n\nfor help, run 'php laika help'",
+            ];
+        }
+
+        return [
+            'success' => false,
+            'message' => "Invalid command \n\n\t'{$key}'\n\nfor help, run 'php laika help'",
+        ];
     }
 }
