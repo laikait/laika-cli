@@ -6,42 +6,42 @@ namespace Laika\Cli\Command;
 
 use Laika\Service\Infra;
 
-class AfterwareListCommand implements CommandInterface
+class FilterListCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'list:afterware';
+        return 'list:filter';
     }
 
     public function description(): string
     {
-        return 'List Registered Afterware CLasses';
+        return 'List registers filter cLasses';
     }
 
     public function handle(array $args, string $basePath): int
     {
         if (count($args) != 0) {
-            Message::info($this->command());
+            Message::suggestion($this->command());
             return 1;
         }
 
         $total = 0;
 
-        $afterwares = Infra::getAfterwareClasses();
+        $filters = Infra::getFilterClasses();
 
-        if (empty($afterwares)) {
-            Message::info("No Afterwares Found!");
-            return 0;
+        if (empty($filters)) {
+            Message::info("No filters found!");
+            return 1;
         }
 
-        $head = sprintf("%-4s | %-50s\n", Message::txt_yellow('# SL'), Message::txt_yellow('# AFTERWARE CLASS'));
+        $head = sprintf("%-4s | %-50s\n", Message::txt_yellow('# SL'), Message::txt_yellow('# FILTER CLASSES'));
         echo "\n" . str_repeat('-', strlen($head)) . "\n";
         echo $head;
         echo str_repeat('-', strlen($head)) . "\n";
 
-        foreach ($afterwares as $c) {
+        foreach ($filters as $f) {
             $total++;
-            printf("%-4s | %-50s\n", $total, $c);
+            printf("%-4s | %-50s\n", $total, $f);
         }
         echo str_repeat('-', strlen($head)) . "\n";
         echo "Total: {$total}\n";

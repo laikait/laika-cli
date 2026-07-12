@@ -23,7 +23,7 @@ class ModelRenameCommand implements CommandInterface
             return 1;
         }
 
-        // Get Old & New Pipeline Names
+        // Get Old & New Model Names
         $old = Argument::getValue('--old', $args);
         $new = Argument::getValue('--new', $args);
 

@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
-class PipelineRenameCommand implements CommandInterface
+use Laika\Cli\Stub;
+
+class FilterRenameCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return "rename:pipeline";
+        return 'rename:filter';
     }
 
     public function description(): string
     {
-        return "Rename a pipeline and update its class";
+        return 'Rename a filter class';
     }
 
     public function handle(array $args, string $basePath): int
@@ -23,69 +25,68 @@ class PipelineRenameCommand implements CommandInterface
             return 1;
         }
 
-        // Get Old & New Pipeline Names
+        // Get Old & New Filter Names
         $old = Argument::getValue('--old', $args);
         $new = Argument::getValue('--new', $args);
 
-        // Check Old & New Names are Not Empty
+        // Validate Old & New Filter Name
         if (empty($old) || empty($new)) {
             Message::error("Old/New name should not be empty!");
             return 1;
         }
 
-        // Check Valid Names
         if (!preg_match('/^[a-z_]+$/i', $old) || !preg_match('/^[a-z_]+$/i', $old)) {
-            Message::error("Old/New Name Should Contain Characters Only!");
+            Message::error("Filter name should contain characters only!");
             return 1;
         }
 
-        $oldPath = $basePath . "/lf-app/Pipeline/{$old}.php";
-        $newPath = $basePath . "/lf-app/Pipeline/{$new}.php";
+        $oldPath = "{$basePath}/lf-app/Filter/{$old}.php";
+        $newPath = "{$basePath}/lf-app/Filter/{$new}.php";
 
-        // Check Old Pipeline Exists
+        // Check Old Filter exists
         if (!is_file($oldPath)) {
-            Message::error("Pipeline [{$old}] Doesn't Exists!");
+            Message::error("Filter [{$old}] doesn't exists.");
             return 1;
         }
 
-        // Check New Pipeline Doesn't Exists
+        // Check New Filter doesn't exists
         if (is_file($newPath)) {
-            Message::error("Pipeline [{$new}] Already Exists!");
+            Message::error("Filter [{$new}] already exists.");
             return 1;
         }
 
         try {
             $content = file_get_contents($oldPath);
-            $content = preg_replace("/\bclass\s+" . preg_quote($old, '/') . "\b/i", "class {$new}", $content);
+            $content = preg_replace('/\bclass\s+' . preg_quote($old, '/') . '\b/i', "class {$new}", $content);
 
             rename($oldPath, $newPath);
             file_put_contents($newPath, $content);
-            Message::success("Renamed Pipeline: [{$old} -> {$new}]");
+
+            Message::success("Filter renamed [{$old} -> {$new}] successfully.");
         } catch (\Throwable $th) {
             Message::error($th->getMessage());
             return 1;
         }
-
         return 0;
     }
 
     public function command(): string
     {
-        return "php laika rename:pipeline <--old=name> <--new=name>";
+        return "php laika rename:filter <--old=old> <--new=new>";
     }
 
     public function help(): string
     {
         return <<<HELP
-        PIPELINE RENAME COMMAND
+        FILTER MAKE COMMAND
 
             COMMAND     :   {$this->command()}
 
             INPUTS      :   No inputs available
 
             PARAMETERS  :
-                --old   :   (Required) old pipeline name
-                --new   :   (Required) new pipeline name
+                --old   :   Old filter name
+                --new   :   New filter name
 
         HELP;
     }

@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace Laika\Cli;
 
 use Laika\Cli\Command\CommandInterface;
-use Laika\Cli\Command\AfterwareListCommand;
+use Laika\Cli\Command\FilterListCommand;
 use Laika\Cli\Command\AppSyncCommand;
 use Laika\Cli\Command\RouteListCommand;
 use Laika\Cli\Command\RouteMakeCommand;
 use Laika\Cli\Command\PipelineMakeCommand;
 use Laika\Cli\Command\PipelineRenameCommand;
-use Laika\Cli\Command\MakeAfterwareCommand;
+use Laika\Cli\Command\FilterMakeCommand;
+use Laika\Cli\Command\FilterRemoveCommand;
+use Laika\Cli\Command\FilterRenameCommand;
 use Laika\Cli\Command\ModelMakeCommand;
-use Laika\Cli\Command\MakeSchemaCommand;
 use Laika\Cli\Command\MakeTemplateCommand;
 use Laika\Cli\Command\ServiceMakeCommand;
 use Laika\Cli\Command\MakeControllerCommand;
@@ -48,10 +49,7 @@ class Application
         $this->register(new ModelMakeCommand()); // Done
         $this->register(new ModelRemoveCommand()); // Done
         $this->register(new ModelRenameCommand()); // Done
-        
-        // Schema
-        $this->register(new ListSchemaCommand);
-        $this->register(new MakeSchemaCommand());
+        $this->register(new ListSchemaCommand); // Done
 
         // Pipeline
         $this->register(new PipelineListCommand); // Done
@@ -59,9 +57,11 @@ class Application
         $this->register(new PipelineRenameCommand()); // Done
         $this->register(new PipelineRemoveCommand()); // Done
 
-        // Afterware
-        $this->register(new AfterwareListCommand);
-        $this->register(new MakeAfterwareCommand());
+        // Filter
+        $this->register(new FilterListCommand); // Done
+        $this->register(new FilterMakeCommand()); // Done
+        $this->register(new FilterRenameCommand()); // Done
+        $this->register(new FilterRemoveCommand()); // Done
 
         // Controller
         $this->register(new ListControllerCommand);

@@ -69,9 +69,6 @@ class ModelMakeCommand implements CommandInterface
             return 1;
         }
 
-        // Check Schema Required. Default is Required
-        $schema = Argument::getBool('--schema', $args, true);
-
         $model_path = $basePath . "/lf-app/Model/{$name}.php";
 
         try {
@@ -84,26 +81,23 @@ class ModelMakeCommand implements CommandInterface
 
             Stub::write($model_path, $model_content);
 
-            // Write Schema
-            if ($schema) {
-                $schema_class = "{$name}Schema";
-                $schema_path = $basePath . "/lf-app/Schema/{$schema_class}.php";
+            $schema_class = "{$name}Schema";
+            $schema_path = $basePath . "/lf-app/Schema/{$schema_class}.php";
 
-                if (is_file($schema_path)) {
-                    Message::error("Schema [{$schema_class}] already exists!");
-                    return 1;
-                }
-
-                $schema_content = Stub::render('schema', [
-                    'model' =>  $name,
-                    'class' =>  $schema_class,
-                    'table' =>  $table,
-                    'id'    =>  $id,
-                    'uid'   =>  $uid,
-                ]);
-
-                Stub::write($schema_path, $schema_content);
+            if (is_file($schema_path)) {
+                Message::error("Schema [{$schema_class}] already exists!");
+                return 1;
             }
+
+            $schema_content = Stub::render('schema', [
+                'model' =>  $name,
+                'class' =>  $schema_class,
+                'table' =>  $table,
+                'id'    =>  $id,
+                'uid'   =>  $uid,
+            ]);
+
+            Stub::write($schema_path, $schema_content);
 
             Message::success("Model [{$name}] created successfully.");
         } catch (\Throwable $th) {
@@ -116,7 +110,7 @@ class ModelMakeCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika make:model <name> [--table=table] [--id=id] [--uid=uid] [--schema]";
+        return "php laika make:model <name> [--table=table] [--id=id] [--uid=uid]";
     }
 
     public function help(): string

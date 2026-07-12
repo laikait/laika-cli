@@ -81,4 +81,37 @@ class Argument
             'message' => "Invalid command \n\n\t'{$key}'\n\nfor help, run 'php laika help'",
         ];
     }
+
+    /**
+     * Readline Action Status
+     * @param string $message Readline Message. Example: 'Confirm?'
+     * @param array $accepted Accepted Input. Default is ['y','n']
+     * @param array $accepted Accepted Input. Default is ['y','n']
+     * @return bool
+     */
+    public static function readline(string $message, array $accepted = ['y','n'], string|array $positive = 'y'): bool
+    {
+        $message = trim($message);
+        $accepted = array_map('strtolower', $accepted);
+        $positive = array_map('strtolower', (array) $positive);
+        $attampt = 0;
+        $action = false;
+        while (true) {
+            if ($attampt === 10) {
+                Message::error("Action failed. Tried maximum attampt {$attampt}");
+                exit();
+            }
+            $status = readline($message . ' ' . implode('/', $accepted) . ': ');
+            $status = strtolower($status);
+            if (in_array($status, $accepted)) {
+                if (in_array($status, $positive)) $action = true;
+                break;
+            } else {
+                echo "Invalid input. Please enter " . implode('/', $accepted) . "\n";
+            }
+            $attampt++;
+        }
+
+        return $action;
+    }
 }
