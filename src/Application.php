@@ -17,8 +17,10 @@ use Laika\Cli\Command\FilterRenameCommand;
 use Laika\Cli\Command\ModelMakeCommand;
 use Laika\Cli\Command\MakeTemplateCommand;
 use Laika\Cli\Command\ServiceMakeCommand;
-use Laika\Cli\Command\MakeControllerCommand;
-use Laika\Cli\Command\ListControllerCommand;
+use Laika\Cli\Command\ControllerMakeCommand;
+use Laika\Cli\Command\ControllerListCommand;
+use Laika\Cli\Command\ControllerRemoveCommand;
+use Laika\Cli\Command\ControllerRenameCommand;
 use Laika\Cli\Command\PipelineListCommand;
 use Laika\Cli\Command\ModelListCommand;
 use Laika\Cli\Command\ListSchemaCommand;
@@ -64,8 +66,10 @@ class Application
         $this->register(new FilterRemoveCommand()); // Done
 
         // Controller
-        $this->register(new ListControllerCommand);
-        $this->register(new MakeControllerCommand());
+        $this->register(new ControllerListCommand); // Done
+        $this->register(new ControllerMakeCommand()); // Done
+        $this->register(new ControllerRenameCommand()); // Done
+        $this->register(new ControllerRemoveCommand()); // Done
 
         // Template
         $this->register(new ListTemplateCommand);

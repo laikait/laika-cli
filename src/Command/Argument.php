@@ -15,10 +15,9 @@ class Argument
      */
     public static function getValue(string $key, array $args, null|int|string $default = null): null|int|string
     {
-        if (!str_starts_with($key, '--')) return $default;
-
+        $key = '--' . ltrim(strtolower($key), '--');
         foreach ($args as $arg) {
-            if (str_starts_with($arg, "{$key}=")) return substr($arg, strlen("{$key}="));
+            if (str_starts_with(strtolower($arg), "{$key}=")) return substr($arg, strlen("{$key}="));
         }
         return $default;
     }
@@ -32,10 +31,9 @@ class Argument
      */
     public static function getBool(string $key, array $args, bool $default = false): bool
     {
-        if (!str_starts_with($key, '--')) return $default;
-
+        $key = '--' . ltrim(strtolower($key), '--');
         foreach ($args as $arg) {
-            if ($arg === $key) return true;
+            if (strtolower($arg) === $key) return true;
         }
         return $default;
     }

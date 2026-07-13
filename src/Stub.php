@@ -36,13 +36,7 @@ class Stub
     {
         $dir = dirname($path);
 
-        if (!is_dir($dir)) {
-            mkdir($dir, 0755, true);
-        }
-
-        if (is_file($path)) {
-            throw new \RuntimeException("File already exists: {$path}");
-        }
+        if (!is_dir($dir)) mkdir($dir, 0755, true);
 
         file_put_contents($path, $content);
     }

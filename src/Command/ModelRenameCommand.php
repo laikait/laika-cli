@@ -33,7 +33,7 @@ class ModelRenameCommand implements CommandInterface
             return 1;
         }
 
-        if (!preg_match('/^[a-z_]+$/i', $old) || !preg_match('/^[a-z_]+$/i', $old)) {
+        if (!preg_match('/^[a-z_]+$/i', $old) || !preg_match('/^[a-z_]+$/i', $new)) {
             Message::error("Model name should contain characters only!");
             return 1;
         }

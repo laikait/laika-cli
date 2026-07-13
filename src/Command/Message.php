@@ -171,43 +171,51 @@ class Message
         echo "\n" . self::txt_green('[SUCCESS]') . " {$message}\n";
     }
 
-        /**
-     * @param string $message
+    /**
      * This method is used to print informational messages to the console.
+     * @param string $message
+     * @param string $prefix
      * @return void
      */
-    public static function error(string $message): void
+    public static function error(string $message, string $prefix = 'error'): void
     {
-        echo "\n" . self::txt_red('[ERROR]') . " {$message}\n";
+        $prefix = strtoupper($prefix);
+        echo "\n" . self::txt_red("[{$prefix}]") . " {$message}\n";
     }
 
     /**
-     * @param string $message
      * This method is used to print informational messages to the console.
+     * @param string $message
+     * @param string $prefix
      * @return void
      */
-    public static function info(string $message): void
+    public static function info(string $message, string $prefix = 'info'): void
     {
-        echo "\n" . self::txt_blue('[INFO]') . " {$message}\n";
+        $prefix = strtoupper($prefix);
+        echo "\n" . self::txt_blue("[{$prefix}]") . " {$message}\n";
     }
 
     /**
-     * @param string $message
      * This method is used to print informational messages to the console.
+     * @param string $message
+     * @param string $prefix
      * @return void
      */
-    public static function warning(string $message): void
+    public static function warning(string $message, string $prefix = 'warning'): void
     {
-        echo "\n" . self::txt_yellow('[WARNING]') . " {$message}\n";
+        $prefix = strtoupper($prefix);
+        echo "\n" . self::txt_yellow("[{$prefix}]") . " {$message}\n";
     }
 
     /**
-     * @param string $message
      * This method is used to print informational messages to the console.
+     * @param string $message
+     * @param string $prefix
      * @return void
      */
-    public static function suggestion(string $message): void
+    public static function suggestion(string $message, string $prefix = 'suggestion'): void
     {
-        echo "\n" . self::txt_cyan('[SUGGESTION]') . " {$message}\n";
+        $prefix = strtoupper($prefix);
+        echo "\n" . self::txt_cyan("[{$prefix}]") . " {$message}\n";
     }
 }
