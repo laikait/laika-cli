@@ -13,11 +13,6 @@ class PipelineListCommand implements CommandInterface
         return 'list:pipeline';
     }
 
-    public function description(): string
-    {
-        return 'List registered pipeline classes';
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) > 0) {
@@ -56,18 +51,14 @@ class PipelineListCommand implements CommandInterface
         return "php laika list:pipeline";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        PIPELINE MAKE COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :
-                name    :   Pipeline name to make
-
-            PARAMETERS  :   No parameters available
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'List of registered pipeline classes',
+            'command'       =>  $this->command(),
+            'inputs'        =>  [],
+            'params'        =>  []
+        ];
     }
 }

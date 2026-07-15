@@ -13,11 +13,6 @@ class FilterListCommand implements CommandInterface
         return 'list:filter';
     }
 
-    public function description(): string
-    {
-        return 'List registers filter cLasses';
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) != 0) {
@@ -54,17 +49,14 @@ class FilterListCommand implements CommandInterface
         return "php laika list:filter";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        FILTER LIST COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :   No inputs available
-
-            PARAMETERS  :   No parameters available
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'List of registers filter cLasses',
+            'command'       =>  $this->command(),
+            'inputs'        =>  [],
+            'params'        =>  []
+        ];
     }
 }

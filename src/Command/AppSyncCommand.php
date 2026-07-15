@@ -15,11 +15,6 @@ class AppSyncCommand implements CommandInterface
         return 'app:sync';
     }
 
-    public function description(): string
-    {
-        return 'Sync app files';
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) != 0) {
@@ -62,7 +57,6 @@ class AppSyncCommand implements CommandInterface
                 RewriteCond %{HTTP:Authorization} .
                 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-                RewriteCond %{REQUEST_FILENAME} !-f
                 RewriteRule ^ index.php [QSA,L]
             </IfModule>
             ##################################################################
@@ -86,17 +80,14 @@ class AppSyncCommand implements CommandInterface
         return "php laika app:sync";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        APP SYNC COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :   No inputs available
-
-            PARAMETERS  :   No parameters available
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'Sync app files and other settings',
+            'command'       =>  $this->command(),
+            'inputs'        =>  [],
+            'params'        =>  []
+        ];
     }
 }

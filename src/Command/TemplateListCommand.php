@@ -6,22 +6,25 @@ namespace Laika\Cli\Command;
 
 use Laika\Service\Infra;
 
-class ListTemplateCommand implements CommandInterface
+class TemplateListCommand implements CommandInterface
 {
     public function signature(): string
     {
         return 'list:template';
     }
 
-    public function description(): string
-    {
-        return 'List Template Files';
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) > 0) {
             Message::suggestion($this->command());
+            return 0;
+        }
+
+        // Get Template Files
+        $templates = Infra::getTemplateNames();
+
+        if (empty($templates)) {
+            Message::info("No templates found!");
             return 0;
         }
 
@@ -49,17 +52,14 @@ class ListTemplateCommand implements CommandInterface
         return "php laika list:template";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        TEMPLATE LIST COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :   No inputs available
-
-            PARAMETERS  :   No parameters available
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'List of template files',
+            'command'       =>  $this->command(),
+            'inputs'        =>  [],
+            'params'        =>  []
+        ];
     }
 }

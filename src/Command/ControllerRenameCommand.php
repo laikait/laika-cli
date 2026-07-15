@@ -13,11 +13,6 @@ class ControllerRenameCommand implements CommandInterface
         return 'rename:controller';
     }
 
-    public function description(): string
-    {
-        return 'Rename a controller class';
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) != 2) {
@@ -82,19 +77,14 @@ class ControllerRenameCommand implements CommandInterface
         return "php laika rename:controller [--old=name] [--new=name]";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        CONTROLLER MAKE COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :   No inputs available
-
-            PARAMETERS  :
-                --old   :   Old controller name
-                --new   :   New controller name
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'Rename a controller class.',
+            'command'       =>  $this->command(),
+            'inputs'        =>  [],
+            'params'        =>  ['old' => 'Old controller name', 'new' => 'New controller name']
+        ];
     }
 }

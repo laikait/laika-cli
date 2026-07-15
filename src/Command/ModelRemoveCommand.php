@@ -13,11 +13,6 @@ class ModelRemoveCommand implements CommandInterface
         return 'remove:model';
     }
 
-    public function description(): string
-    {
-        return 'Remove a model class';
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) != 1) {
@@ -72,18 +67,14 @@ class ModelRemoveCommand implements CommandInterface
         return "php laika remove:model <name>";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        MODEL REMOVE COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :
-                name    :   Model name to remove
-
-            PARAMETERS  :   No parameters available
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'Remove a model class',
+            'command'       =>  $this->command(),
+            'inputs'        =>  ['name' => 'Model name to remove'],
+            'params'        =>  []
+        ];
     }
 }

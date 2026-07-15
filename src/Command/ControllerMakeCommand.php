@@ -13,11 +13,6 @@ class ControllerMakeCommand implements CommandInterface
         return 'make:controller';
     }
 
-    public function description(): string
-    {
-        return 'Create a new controller class';
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (!in_array(count($args), range(1,2))) {
@@ -95,19 +90,14 @@ class ControllerMakeCommand implements CommandInterface
         return "php laika make:controller <name> [--method=index]";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        CONTROLLER MAKE COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :
-                name    :   Controller name
-
-            PARAMETERS  :
-                --method:   Controller method name
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'Create a new controller ',
+            'command'       =>  $this->command(),
+            'inputs'        =>  ['name' => 'Controller class name'],
+            'params'        =>  ['method' => 'Controller method name']
+        ];
     }
 }

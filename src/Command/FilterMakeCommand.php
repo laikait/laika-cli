@@ -13,11 +13,6 @@ class FilterMakeCommand implements CommandInterface
         return 'make:filter';
     }
 
-    public function description(): string
-    {
-        return 'Create a new filter class';
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) != 1) {
@@ -59,18 +54,14 @@ class FilterMakeCommand implements CommandInterface
         return "php laika make:filter <name>";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        FILTER MAKE COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :
-                name    :   Filter name to make
-
-            PARAMETERS  :   No parameters available
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'Create a new filter class',
+            'command'       =>  $this->command(),
+            'inputs'        =>  ['name' =>  'Filter class name'],
+            'params'        =>  []
+        ];
     }
 }

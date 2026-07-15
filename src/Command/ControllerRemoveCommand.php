@@ -13,11 +13,6 @@ class ControllerRemoveCommand implements CommandInterface
         return 'remove:controller';
     }
 
-    public function description(): string
-    {
-        return 'Remove a controller class';
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) != 1) {
@@ -68,18 +63,14 @@ class ControllerRemoveCommand implements CommandInterface
         return "php laika remove:controller <name>";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        CONTROLLER MAKE COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :
-                name    :   Controller name
-
-            PARAMETERS  :   No parameters available
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'Remove a controller class ',
+            'command'       =>  $this->command(),
+            'inputs'        =>  ['name' => 'Controller class name'],
+            'params'        =>  []
+        ];
     }
 }

@@ -11,11 +11,6 @@ class PipelineRemoveCommand implements CommandInterface
         return "remove:pipeline";
     }
 
-    public function description(): string
-    {
-        return "Remove a pipeline";
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) != 1) {
@@ -50,18 +45,14 @@ class PipelineRemoveCommand implements CommandInterface
         return "php laika remove:pipeline <name>";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        PIPELINE REMOVE COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :
-                name    :   Pipeline name to remove
-
-            PARAMETERS  :   No parameters available
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'Remove a pipeline',
+            'command'       =>  $this->command(),
+            'inputs'        =>  ['name' => 'Pipeline name to remove'],
+            'params'        =>  []
+        ];
     }
 }

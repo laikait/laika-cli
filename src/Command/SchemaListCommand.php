@@ -6,16 +6,11 @@ namespace Laika\Cli\Command;
 
 use Laika\Service\Infra;
 
-class ListSchemaCommand implements CommandInterface
+class SchemaListCommand implements CommandInterface
 {
     public function signature(): string
     {
         return 'list:schema';
-    }
-
-    public function description(): string
-    {
-        return 'List Registered Schema CLasses';
     }
 
     public function handle(array $args, string $basePath): int
@@ -48,17 +43,14 @@ class ListSchemaCommand implements CommandInterface
         return "php laika list:schema";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        SCHEMA LIST COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :   No inputs available
-
-            PARAMETERS  :   No parameters available
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'List of registered schema classes',
+            'command'       =>  $this->command(),
+            'inputs'        =>  [],
+            'params'        =>  []
+        ];
     }
 }

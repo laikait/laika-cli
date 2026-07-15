@@ -14,11 +14,6 @@ class ServiceRemoveCommand implements CommandInterface
         return 'remove:service';
     }
 
-    public function description(): string
-    {
-        return 'Remove a new service class';
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) != 1) {
@@ -27,7 +22,7 @@ class ServiceRemoveCommand implements CommandInterface
         }
 
         // Get Name & Validate Name
-        $name = $args[0];
+        $name = ucfirst($args[0]);
         if (!preg_match('/^[a-z_]+$/i', $name)) {
             Message::error("Invalid name [{$name}]");
             return 1;
@@ -65,18 +60,14 @@ class ServiceRemoveCommand implements CommandInterface
         return "php laika remove:service <name>";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        SERVICE MAKE COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :
-                name    :   Service name to make
-
-            PARAMETERS  :   No parameters found
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'Remove a service class',
+            'command'       =>  $this->command(),
+            'inputs'        =>  ['name' => 'Service name to remove'],
+            'params'        =>  []
+        ];
     }
 }

@@ -1,8 +1,0 @@
-{% extends "layouts/app.twig" %}
-
-{% block title %}{{title}}{% endblock %}
-
-{% block content %}
-<div class="ql-editor">
-</div>
-{% endblock %}

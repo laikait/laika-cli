@@ -14,11 +14,6 @@ class SecretGenerateCommand implements CommandInterface
         return 'generate:secret';
     }
 
-    public function description(): string
-    {
-        return 'Generate New Secret Key';
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) > 1) {
@@ -61,17 +56,14 @@ class SecretGenerateCommand implements CommandInterface
         return "php laika generate:secret [--byte=32]";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        SECRET GENERATE COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :   No Inputs Available
-
-            PARAMETERS  :
-                --byte  :   Number of bytes to generate. Default is 32. Range 16 to 64
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'Generate new secret key',
+            'command'       =>  $this->command(),
+            'inputs'        =>  [],
+            'params'        =>  ['byte' => 'Number of bytes to generate. Default is 32. Range 16 to 64']
+        ];
     }
 }

@@ -13,11 +13,6 @@ class ControllerListCommand implements CommandInterface
         return 'list:controller';
     }
 
-    public function description(): string
-    {
-        return 'List of registered controller cLasses';
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) != 0) {
@@ -55,17 +50,14 @@ class ControllerListCommand implements CommandInterface
         return "php laika list:controller";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        RESPONSE LIST COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :   No inputs available
-
-            PARAMETERS  :   No parameters available
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'List of registered controller cLasses',
+            'command'       =>  $this->command(),
+            'inputs'        =>  [],
+            'params'        =>  []
+        ];
     }
 }

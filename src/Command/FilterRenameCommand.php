@@ -13,11 +13,6 @@ class FilterRenameCommand implements CommandInterface
         return 'rename:filter';
     }
 
-    public function description(): string
-    {
-        return 'Rename a filter class';
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) != 2) {
@@ -72,22 +67,17 @@ class FilterRenameCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika rename:filter <--old=old> <--new=new>";
+        return "php laika rename:filter <--old=name> <--new=name>";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        FILTER MAKE COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :   No inputs available
-
-            PARAMETERS  :
-                --old   :   Old filter name
-                --new   :   New filter name
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'Rename a filter class',
+            'command'       =>  $this->command(),
+            'inputs'        =>  [],
+            'params'        =>  ['old' => 'Old filter name', 'new' => 'New filter name']
+        ];
     }
 }

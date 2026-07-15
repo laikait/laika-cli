@@ -14,11 +14,6 @@ class RouteListCommand implements CommandInterface
         return 'list:route';
     }
 
-    public function description(): string
-    {
-        return 'List Registered Routes';
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) > 0) {
@@ -70,17 +65,14 @@ class RouteListCommand implements CommandInterface
         return "php laika list:route";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        SECRET GENERATE COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :   No inputs Available
-
-            PARAMETERS  :   No parameters available
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'List of registered routes',
+            'command'       =>  $this->command(),
+            'inputs'        =>  [],
+            'params'        =>  []
+        ];
     }
 }

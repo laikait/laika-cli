@@ -11,11 +11,6 @@ class ModelRenameCommand implements CommandInterface
         return "rename:model";
     }
 
-    public function description(): string
-    {
-        return "Rename model class, table, primary & UID column name";
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (!in_array(count($args), range(2, 5))) {
@@ -128,22 +123,20 @@ class ModelRenameCommand implements CommandInterface
         return "php laika rename:model <--old=name> <--new=name> [--table=table] [--id=id] [--uid=uid]";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        PIPELINE RENAME COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :   No inputs available
-
-            PARAMETERS  :
-                --old   :   (Required) old model name
-                --new   :   (Required) new model name
-                --table :   (Optional) Model table name
-                --id    :   (Optional) Model primary column name
-                --uid   :   (Optional) Model UID column name
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'Rename model class, table, primary & UID column name',
+            'command'       =>  $this->command(),
+            'inputs'        =>  ['name' => 'Model name to remove'],
+            'params'        =>  [
+                                    'old'   =>  '(Required) old model name',
+                                    'new'   =>  '(Required) new model name',
+                                    'table' =>  '(Optional) Model table name',
+                                    'id'    =>  '(Optional) Model primary column name',
+                                    'uid'   =>  '(Optional) Model UID column name'
+                                ]
+        ];
     }
 }

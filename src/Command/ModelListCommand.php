@@ -13,11 +13,6 @@ class ModelListCommand implements CommandInterface
         return 'list:model';
     }
 
-    public function description(): string
-    {
-        return 'List Registered Model CLasses';
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) != 0) {
@@ -54,17 +49,14 @@ class ModelListCommand implements CommandInterface
         return "php laika list:model";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        MODEL LIST COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :   No inputs available
-
-            PARAMETERS  :   No parameters available
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'List of registered model cLasses',
+            'command'       =>  $this->command(),
+            'inputs'        =>  [],
+            'params'        =>  []
+        ];
     }
 }

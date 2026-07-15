@@ -13,11 +13,6 @@ class RelayListCommand implements CommandInterface
         return 'list:relay';
     }
 
-    public function description(): string
-    {
-        return 'List Registered Relay CLasses';
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) > 1) {
@@ -47,17 +42,14 @@ class RelayListCommand implements CommandInterface
         return "php laika list:relay";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        RELAY LIST COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :   No inputs available
-
-            PARAMETERS  :   No parameters available
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'List of registered relay classes',
+            'command'       =>  $this->command(),
+            'inputs'        =>  [],
+            'params'        =>  []
+        ];
     }
 }

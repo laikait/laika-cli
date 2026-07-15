@@ -14,11 +14,6 @@ class ServiceMakeCommand implements CommandInterface
         return 'make:service';
     }
 
-    public function description(): string
-    {
-        return 'Create a new service class';
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) != 2) {
@@ -26,8 +21,8 @@ class ServiceMakeCommand implements CommandInterface
             return 1;
         }
 
-        $service = trim(Argument::getValue('--name', $args, ''), '\\');
-        $relay = trim(Argument::getValue('--class', $args, ''), '\\');
+        $service = ucfirst(trim(Argument::getValue('name', $args, ''), '\\'));
+        $relay = trim(Argument::getValue('class', $args, ''), '\\');
         
         // Validate Inputs
         if (empty($service)) {
@@ -111,19 +106,17 @@ class ServiceMakeCommand implements CommandInterface
         return "php laika make:service <--name=ServiceClass> <--class=RelayClass>";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        SERVICE MAKE COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :   No inputs found
-
-            PARAMETERS  :
-                --name  :   Relay Provider Class Name. Example: Template
-                --class :   Service Provider Class Name. Example: Laika\CoreApp\Template
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'Create a new service class',
+            'command'       =>  $this->command(),
+            'inputs'        =>  [],
+            'params'        =>  [
+                                    'name'  =>  'Relay provider class name. Example: Template',
+                                    'class' =>  'Service provider class name. Example: Laika\Core\App\Template'
+                                ]
+        ];
     }
 }

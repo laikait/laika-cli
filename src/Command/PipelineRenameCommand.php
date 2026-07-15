@@ -11,11 +11,6 @@ class PipelineRenameCommand implements CommandInterface
         return "rename:pipeline";
     }
 
-    public function description(): string
-    {
-        return "Rename a pipeline and update its class";
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) != 2) {
@@ -74,19 +69,14 @@ class PipelineRenameCommand implements CommandInterface
         return "php laika rename:pipeline <--old=name> <--new=name>";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        PIPELINE RENAME COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :   No inputs available
-
-            PARAMETERS  :
-                --old   :   (Required) old pipeline name
-                --new   :   (Required) new pipeline name
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'Rename a pipeline and update its class',
+            'command'       =>  $this->command(),
+            'inputs'        =>  [],
+            'params'        =>  ['old' => '(Required) old pipeline name', 'new' => '(Required) new pipeline name']
+        ];
     }
 }

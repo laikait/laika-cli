@@ -13,11 +13,6 @@ class PipelineMakeCommand implements CommandInterface
         return 'make:pipeline';
     }
 
-    public function description(): string
-    {
-        return 'Create a new pipeline class';
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) != 1) {
@@ -61,18 +56,14 @@ class PipelineMakeCommand implements CommandInterface
         return "php laika make:pipeline <name>";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        PIPELINE MAKE COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :
-                name    :   Pipeline name to make
-
-            PARAMETERS  :   No parameters available
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'Create a new pipeline class',
+            'command'       =>  $this->command(),
+            'inputs'        =>  ['name' => 'Pipeline name to make'],
+            'params'        =>  []
+        ];
     }
 }

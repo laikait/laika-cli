@@ -113,18 +113,14 @@ class ModelMakeCommand implements CommandInterface
         return "php laika make:model <name> [--table=table] [--id=id] [--uid=uid]";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        MODEL MAKE COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :
-                name    :   Model name to make
-
-            PARAMETERS  :   No parameters available
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'Create a new model class',
+            'command'       =>  $this->command(),
+            'inputs'        =>  [],
+            'params'        =>  []
+        ];
     }
 }

@@ -13,11 +13,6 @@ class FilterRemoveCommand implements CommandInterface
         return 'remove:filter';
     }
 
-    public function description(): string
-    {
-        return 'Remove a filter class';
-    }
-
     public function handle(array $args, string $basePath): int
     {
         if (count($args) != 1) {
@@ -69,18 +64,14 @@ class FilterRemoveCommand implements CommandInterface
         return "php laika remove:filter <name>";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        FILTER MAKE COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :
-                name    :   Filter name to remove
-
-            PARAMETERS  :   No parameters available
-
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'Remove a filter class',
+            'command'       =>  $this->command(),
+            'inputs'        =>  ['name' =>  'Filter name to remove'],
+            'params'        =>  []
+        ];
     }
 }
