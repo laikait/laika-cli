@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace App\Filter;
 
-use Laika\Core\Interfaces\FilterInterface;
+use Laika\Route\Interfaces\FilterInterface;
 
 class {{class}} implements FilterInterface
 {

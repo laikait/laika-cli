@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
-use Laika\Route\Url;
+use Laika\Route\Path;
 use Laika\Route\Handler;
 
 class RouteListCommand implements CommandInterface
@@ -24,7 +24,7 @@ class RouteListCommand implements CommandInterface
         $dir = $basePath . '/lf-routes';
 
         // Load Routes
-        Url::loadRoutes($dir);
+        Path::loadRoutes($dir);
 
         // Get Method
         $method = Argument::getValue('--method', $args);

@@ -25,7 +25,8 @@ class AppSyncCommand implements CommandInterface
         // Clear Base Path Junk Files
         $files = [
             "{$basePath}/jp.php",
-            "{$basePath}/jp.php.bat"
+            "{$basePath}/jp.php.bat",
+            "{$basePath}/laika.bat"
         ];
 
         $files = array_merge($files, Directory::scan("{$basePath}/lf-cache", true, 'php'));
@@ -46,7 +47,7 @@ class AppSyncCommand implements CommandInterface
         // Sync .HTACCESS
         $app_ht_file = "{$basePath}/.htaccess";
         if (!File::exists($app_ht_file)) {
-            $app_ht_content = <<<HTCON
+            $app_ht_content = <<<HTCONTENT
             ##################################################################
             ############## PLEASE DO NOT EDIT AFTER THIS LINE ################
             ##################################################################
@@ -62,12 +63,13 @@ class AppSyncCommand implements CommandInterface
             ##################################################################
             ################## YOU CAN ADD AFTER THIS LINE ###################
             ##################################################################
-            HTCON;
-        }
-        try {
-            File::write($app_ht_content, $app_ht_file);
-        } catch (\Throwable $th) {
-            Message::error($th->getMessage());
+            HTCONTENT;
+
+            try {
+                File::write($app_ht_content, $app_ht_file);
+            } catch (\Throwable $th) {
+                Message::error($th->getMessage());
+            }
         }
 
         Message::success("App Sync Successfull.");
