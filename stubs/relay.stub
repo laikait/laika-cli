@@ -1,0 +1,42 @@
+<?php
+/**
+ * Laika Framework
+ * Author: Showket Ahmed
+ * Email: riyadhtayf@gmail.com
+ * License: MIT
+ * This file is part of the Laika PHP Framework.
+ * For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
+namespace App\Relay;
+
+use Laika\Relay\RelayProvider;
+use {{relay_class}};
+
+class {{class}} extends RelayProvider
+{
+    public function register(): void
+    {
+        /**
+         * Use Any Relay Registry Method
+         * $this->registry->bind('{{accessor}}', {{accessor_class}}::class, []);
+         * 
+         * $this->registry->instance('{{accessor}}', new {{accessor_class}}());
+         * 
+         * $this->registry->singleton('{{accessor}}', {{accessor_class}}::class, []);
+         */
+
+        // Set Singleton By Default
+        $this->registry->singleton('{{accessor}}', {{accessor_class}}::class, []);
+    }
+
+    public function boot(): void
+    {
+        /**
+         * Write Your Code Here
+         * Execute upon composer autoload
+         */
+    }
+}

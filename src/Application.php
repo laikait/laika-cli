@@ -4,19 +4,36 @@ declare(strict_types=1);
 
 namespace Laika\Cli;
 
+use Laika\Cli\Command\Message;
+use Laika\Cli\Command\Argument;
+use Laika\Cli\Command\HelpCommand;
 use Laika\Cli\Command\CommandInterface;
-use Laika\Cli\Command\MakeRouteCommand;
-use Laika\Cli\Command\MakeMiddlewareCommand;
-use Laika\Cli\Command\MakeAfterwareCommand;
-use Laika\Cli\Command\MakeModelCommand;
-use Laika\Cli\Command\MakeSchemaCommand;
-use Laika\Cli\Command\MakeTemplateCommand;
-use Laika\Cli\Command\MakeServiceCommand;
-use Laika\Cli\Command\MakeControllerCommand;
-use Laika\Cli\Command\ListCommand;
-use Laika\Cli\Command\RemoveCommand;
-use Laika\Cli\Command\RenameCommand;
-use Laika\Cli\Command\RenameRouteCommand;
+use Laika\Cli\Command\FilterListCommand;
+use Laika\Cli\Command\AppSyncCommand;
+use Laika\Cli\Command\RouteListCommand;
+use Laika\Cli\Command\PipelineMakeCommand;
+use Laika\Cli\Command\PipelineRenameCommand;
+use Laika\Cli\Command\FilterMakeCommand;
+use Laika\Cli\Command\FilterRemoveCommand;
+use Laika\Cli\Command\FilterRenameCommand;
+use Laika\Cli\Command\ModelMakeCommand;
+use Laika\Cli\Command\TemplateMakeCommand;
+use Laika\Cli\Command\ServiceMakeCommand;
+use Laika\Cli\Command\ControllerMakeCommand;
+use Laika\Cli\Command\ControllerListCommand;
+use Laika\Cli\Command\ControllerRemoveCommand;
+use Laika\Cli\Command\ControllerRenameCommand;
+use Laika\Cli\Command\PipelineListCommand;
+use Laika\Cli\Command\ModelListCommand;
+use Laika\Cli\Command\SchemaListCommand;
+use Laika\Cli\Command\RelayListCommand;
+use Laika\Cli\Command\TemplateListCommand;
+use Laika\Cli\Command\ModelRemoveCommand;
+use Laika\Cli\Command\ModelRenameCommand;
+use Laika\Cli\Command\PipelineRemoveCommand;
+use Laika\Cli\Command\SecretFixCommand;
+use Laika\Cli\Command\SecretGenerateCommand;
+use Laika\Cli\Command\ServiceRemoveCommand;
 
 class Application
 {
@@ -25,36 +42,51 @@ class Application
 
     public function __construct(protected string $basePath)
     {
-        $this->register(new MakeRouteCommand());
-        $this->register(new MakeMiddlewareCommand());
-        $this->register(new MakeAfterwareCommand());
-        $this->register(new MakeModelCommand());
-        $this->register(new MakeSchemaCommand());
-        $this->register(new MakeTemplateCommand());
-        $this->register(new MakeServiceCommand());
-        $this->register(new MakeControllerCommand());
+        // Help
+        $this->register(new HelpCommand()); // Done
+        // Service
+        $this->register(new RelayListCommand); // Done
+        $this->register(new ServiceMakeCommand()); // Done
+        $this->register(new ServiceRemoveCommand()); // Done
 
-        $this->register(new ListCommand('routes', 'lf-routes'));
-        $this->register(new ListCommand('middleware', 'app/Middleware'));
-        $this->register(new ListCommand('afterware', 'app/Afterware'));
-        $this->register(new ListCommand('models', 'app/Model'));
-        $this->register(new ListCommand('services', 'app/Service'));
-        $this->register(new ListCommand('controllers', 'app/Controller'));
+        // Model
+        $this->register(new ModelListCommand()); // Done
+        $this->register(new ModelMakeCommand()); // Done
+        $this->register(new ModelRemoveCommand()); // Done
+        $this->register(new ModelRenameCommand()); // Done
+        $this->register(new SchemaListCommand); // Done
 
-        $this->register(new RemoveCommand('route', 'lf-routes'));
-        $this->register(new RemoveCommand('middleware', 'app/Middleware'));
-        $this->register(new RemoveCommand('afterware', 'app/Afterware'));
-        $this->register(new RemoveCommand('model', 'app/Model'));
-        $this->register(new RemoveCommand('service', 'app/Service'));
-        $this->register(new RemoveCommand('controller', 'app/Controller'));
+        // Pipeline
+        $this->register(new PipelineListCommand); // Done
+        $this->register(new PipelineMakeCommand()); // Done
+        $this->register(new PipelineRenameCommand()); // Done
+        $this->register(new PipelineRemoveCommand()); // Done
 
-        $this->register(new RenameCommand('middleware', 'app/Middleware', 'App\\Middleware'));
-        $this->register(new RenameCommand('afterware', 'app/Afterware', 'App\\Afterware'));
-        $this->register(new RenameCommand('model', 'app/Model', 'App\\Model'));
-        $this->register(new RenameCommand('service', 'app/Service', 'App\\Service'));
-        $this->register(new RenameCommand('controller', 'app/Controller', 'App\\Controller'));
+        // Filter
+        $this->register(new FilterListCommand); // Done
+        $this->register(new FilterMakeCommand()); // Done
+        $this->register(new FilterRenameCommand()); // Done
+        $this->register(new FilterRemoveCommand()); // Done
 
-        $this->register(new RenameRouteCommand());
+        // Controller
+        $this->register(new ControllerListCommand); // Done
+        $this->register(new ControllerMakeCommand()); // Done
+        $this->register(new ControllerRenameCommand()); // Done
+        $this->register(new ControllerRemoveCommand()); // Done
+
+        // Template
+        $this->register(new TemplateListCommand);
+        $this->register(new TemplateMakeCommand());
+
+        // Route
+        $this->register(new RouteListCommand()); // Done
+
+        // Secret
+        $this->register(new SecretGenerateCommand()); // Done
+        $this->register(new SecretFixCommand()); // Done
+
+        // Sync
+        $this->register(new AppSyncCommand()); // Done
     }
 
     protected function register(CommandInterface $command): void
@@ -62,13 +94,32 @@ class Application
         $this->commands[$command->signature()] = $command;
     }
 
+    ######################################################################################
+    /*################################## EXTERNAL API ##################################*/
+    ######################################################################################
     public function run(array $argv): int
     {
+        $command = implode(' ', $argv);
         array_shift($argv);
         $signature = $argv[0] ?? null;
 
         if (!$signature || !isset($this->commands[$signature])) {
-            $this->help();
+            $keys = array_keys($this->commands);
+
+            $matched = Argument::checkMatch($signature, $keys);
+
+            if (empty($matched)) {
+                Message::error("INVALID COMMAND!");
+                echo "\n\tSUGGESTION: php laika help\n";
+                return 1;
+            }
+
+            Message::error("INVALID COMMAND: <{$command}>");
+            echo "\nPartial Matched Signatures Are:";
+            echo "\n-----------------------------\n";
+            foreach ($matched as $sig) {
+                echo "-- {$sig}\n";
+            }
             return 1;
         }
 
@@ -77,16 +128,8 @@ class Application
         try {
             return $this->commands[$signature]->handle($args, $this->basePath);
         } catch (\Throwable $e) {
-            fwrite(STDERR, "Error: {$e->getMessage()}\n");
+            Message::error($e->getMessage());
             return 1;
-        }
-    }
-
-    protected function help(): void
-    {
-        echo "Laika CLI\n\nAvailable commands:\n";
-        foreach ($this->commands as $signature => $command) {
-            printf("  %-20s %s\n", $signature, $command->description());
         }
     }
 }

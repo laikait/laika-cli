@@ -1,0 +1,14 @@
+
+    public function {{method}}()
+    {
+        // Make Template object to handle HTML 
+        // $tpl = new Template();
+
+        // Assign Data
+        // $tpl->assign('title', 'Page Title');
+
+        // load HTML View File
+        // return $tpl->view('{{method}}');
+
+        return "<h1>This is {{method}} page!<h1>";
+    }

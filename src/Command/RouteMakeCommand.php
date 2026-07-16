@@ -6,7 +6,7 @@ namespace Laika\Cli\Command;
 
 use Laika\Cli\Stub;
 
-class MakeRouteCommand implements CommandInterface
+class RouteMakeCommand implements CommandInterface
 {
     public function signature(): string
     {
@@ -37,5 +37,21 @@ class MakeRouteCommand implements CommandInterface
 
         echo "Route created: lf-routes/{$name}.php\n";
         return 0;
+    }
+
+    public function command(): string
+    {
+        return "php laika make:route <name>";
+    }
+
+    public function help(): array
+    {
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'Create new route class',
+            'command'       =>  $this->command(),
+            'inputs'        =>  [],
+            'params'        =>  []
+        ];
     }
 }
