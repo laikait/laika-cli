@@ -44,17 +44,14 @@ class RouteMakeCommand implements CommandInterface
         return "php laika make:route <name>";
     }
 
-    public function help(): string
+    public function help(): array
     {
-        return <<<HELP
-        ROUTE MAKE COMMAND
-
-            COMMAND     :   {$this->command()}
-
-            INPUTS      :
-                name    :   Name of the route
-            
-            PARAMETERS  :   No parameters available
-        HELP;
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  'Create new route class',
+            'command'       =>  $this->command(),
+            'inputs'        =>  [],
+            'params'        =>  []
+        ];
     }
 }

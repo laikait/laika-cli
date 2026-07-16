@@ -39,45 +39,44 @@ class Argument
     }
 
     /**
-     * Match Command Key
+     * Check Matched Signatures
      * @param ?string $key Command Key To Match
      * @return array{success:bool,message:?string}
      */
-    public static function match(?string $key, array $list): array
+    public static function checkMatch(?string $key, array $list): array
     {
-        // 1. Exact match
-        if (in_array(strtolower((string) $key), $list)) {
-            return [
-                'success' => true,
-                'message' => "Command [{$key}] found",
-            ];
+        if ($key === null) {
+            return [];
         }
 
-        // 2. Find Closest Key
-        $closestKey = null;
+        $partialMatches = array_values(array_filter(
+            $list,
+            fn ($existingKey) => str_starts_with($existingKey, $key) || str_contains($existingKey, $key)
+        ));
+
+        if ($partialMatches) {
+            return $partialMatches;
+        }
+
+        $matchedKeys = [];
         $shortestDistance = PHP_INT_MAX;
 
         foreach ($list as $existingKey) {
             $distance = levenshtein($key, $existingKey);
+
             if ($distance < $shortestDistance) {
                 $shortestDistance = $distance;
-                $closestKey = $existingKey;
+                $matchedKeys = [$existingKey];
+            } elseif ($distance === $shortestDistance) {
+                $matchedKeys[] = $existingKey;
             }
         }
 
-        // 3. Decide If Suggestion Is Good Enough
-        // You Can Tune The Threshold (here <= 2)
-        if ($shortestDistance <= 3) {
-            return [
-                'success' => false,
-                'message' => "Laika suggested command:\n\n\t '{$closestKey}'\n\nfor help, run 'php laika help'",
-            ];
+        if ($shortestDistance > 3) {
+            return [];
         }
 
-        return [
-            'success' => false,
-            'message' => "Invalid command \n\n\t'{$key}'\n\nfor help, run 'php laika help'",
-        ];
+        return $matchedKeys;
     }
 
     /**

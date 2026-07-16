@@ -101,7 +101,10 @@ class TemplateMakeCommand implements CommandInterface
             'description'   =>  'Create a new Twig template view',
             'command'       =>  $this->command(),
             'inputs'        =>  ['name' => 'Template name to make'],
-            'params'        =>  []
+            'params'        =>  [
+                                    'ext'  => 'Template extension. html or twig',
+                                    'path' => 'Template path',
+                                ]
         ];
     }
 }

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Laika\Cli;
 
 use Laika\Cli\Command\Message;
+use Laika\Cli\Command\Argument;
+use Laika\Cli\Command\HelpCommand;
 use Laika\Cli\Command\CommandInterface;
 use Laika\Cli\Command\FilterListCommand;
 use Laika\Cli\Command\AppSyncCommand;
@@ -40,6 +42,8 @@ class Application
 
     public function __construct(protected string $basePath)
     {
+        // Help
+        $this->register(new HelpCommand()); // Done
         // Service
         $this->register(new RelayListCommand); // Done
         $this->register(new ServiceMakeCommand()); // Done
@@ -90,13 +94,32 @@ class Application
         $this->commands[$command->signature()] = $command;
     }
 
+    ######################################################################################
+    /*################################## EXTERNAL API ##################################*/
+    ######################################################################################
     public function run(array $argv): int
     {
+        $command = implode(' ', $argv);
         array_shift($argv);
         $signature = $argv[0] ?? null;
 
         if (!$signature || !isset($this->commands[$signature])) {
-            $this->help();
+            $keys = array_keys($this->commands);
+
+            $matched = Argument::checkMatch($signature, $keys);
+
+            if (empty($matched)) {
+                Message::error("INVALID COMMAND!");
+                echo "\n\tSUGGESTION: php laika help\n";
+                return 1;
+            }
+
+            Message::error("INVALID COMMAND: <{$command}>");
+            echo "\nPartial Matched Signatures Are:";
+            echo "\n-----------------------------\n";
+            foreach ($matched as $sig) {
+                echo "-- {$sig}\n";
+            }
             return 1;
         }
 
@@ -107,16 +130,6 @@ class Application
         } catch (\Throwable $e) {
             Message::error($e->getMessage());
             return 1;
-        }
-    }
-
-    protected function help(): void
-    {
-        echo "\n" . Message::txt_yellow(' LAIKA CLI AVAILABLE COMMANDS ') . "\n";
-        echo "------------------------------------------------------------------------------------\n";
-        foreach ($this->commands as $signature => $command) {
-            printf("  %s\n", $command->help());
-            echo "------------------------------------------------------------------------------------\n";
         }
     }
 }
