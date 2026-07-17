@@ -25,8 +25,7 @@ class AppSyncCommand implements CommandInterface
         // Clear Base Path Junk Files
         $files = [
             "{$basePath}/jp.php",
-            "{$basePath}/jp.php.bat",
-            "{$basePath}/laika.bat"
+            "{$basePath}/jp.php.bat"
         ];
 
         $files = array_merge($files, Directory::scan("{$basePath}/lf-cache", true, 'php'));
@@ -43,6 +42,9 @@ class AppSyncCommand implements CommandInterface
                 return 1;
             }
         }
+
+        // Make Uploads Directory
+        Directory::make(APP_PATH . '/uploads');
 
         // Sync .HTACCESS
         $app_ht_file = "{$basePath}/.htaccess";

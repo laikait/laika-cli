@@ -10,16 +10,16 @@ composer require laikait/laika-cli
 ## Usage
 ```bash
 php laika make:route users
-php laika make:middleware Auth
-php laika make:afterware Log
-php laika make:model User --table=users --schema
+php laika make:pipeline Auth
+php laika make:filter Log
+php laika make:model User --table=users --id=id --uid=uid
 php laika make:schema orders
 php laika make:template admin/dashboard
 php laika make:service Mailer
 php laika make:controller UserController
 
 php laika list:routes
-php laika list:middleware
+php laika list:pipeline
 php laika list:models
 
 php laika remove:model User
