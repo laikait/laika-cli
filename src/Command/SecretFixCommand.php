@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
-use Laika\Service\Config;
 use Laika\Cli\Stub;
 
 class SecretFixCommand implements CommandInterface
@@ -21,32 +20,45 @@ class SecretFixCommand implements CommandInterface
             return 1;
         }
 
+        // Create .key File If Doesn't Exists
+        $file = "{$basePath}/lf-storage/.key";
+        if (!is_file($file)) touch($file);
+
         // Get Byte Number
-        $byte = Argument::getValue('--byte', $args, 32);
+        $byte = Argument::getValue('byte', $args, '32');
 
-        if (!is_numeric($byte)) {
-            Message::error("Byte Should Be Numeric");
+        // Validate Byte is Numeric & In Range
+        if (!preg_match('/^\d+$/', $byte)) {
+            Message::error("Byte should be numeric!");
             return 1;
         }
 
-        $byte = (int) $byte;
-        if (($byte < 16) || ($byte > 64)) {
-            Message::error("Byte Should Be Between 16 to 64");
+        if (!in_array($byte, range(16,64))) {
+            Message::error("Byte should be between 16 to 64");
             return 1;
-        }
-
-        // Ceate if Secret File Doesn't Exist
-        if (!Config::has('secret')) {
-            Config::create('secret', ['key' => bin2hex(random_bytes($byte))]);
-            Message::success("{$byte} Byte Secret Key Generated.");
-            return 0;
         }
 
         // Create If Not Valid
-        $key = trim((string) Config::get('secret', 'key'));
-        if (!$key || (strlen($key) != $byte * 2)) {
-            Config::set('secret', 'key', bin2hex(random_bytes($byte)));
-            Message::success("{$byte} Byte Secret Key Regenerated Successfully");
+        $key = base64_decode((string) file_get_contents($file));
+        $newkey = base64_encode(bin2hex(random_bytes(16)) . '-' . bin2hex(random_bytes((int) $byte)));
+
+        // Generate Key if Existing Key Not Found
+        if (!$key) {
+            file_put_contents($file, $newkey);
+            Message::success("{$byte} byte secret key generated successfully");
+            return 0;
+        }
+
+        // Generate Key if Key is Invalid
+        $parts = explode('-', $key);
+        if ((count($parts) != 2)) {
+            file_put_contents($file, $newkey);
+            Message::success("{$byte} byte secret key regenerated successfully");
+            return 0;
+        }
+        if (strlen($parts[1]) != $byte * 2) {
+            file_put_contents($file, $newkey);
+            Message::success("{$byte} byte secret key regenerated successfully");
             return 0;
         }
 

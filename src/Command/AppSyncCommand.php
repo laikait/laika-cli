@@ -43,6 +43,9 @@ class AppSyncCommand implements CommandInterface
             }
         }
 
+        // Make Uploads Directory
+        Directory::make(APP_PATH . '/uploads');
+
         // Sync .HTACCESS
         $app_ht_file = "{$basePath}/.htaccess";
         if (!File::exists($app_ht_file)) {

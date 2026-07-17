@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
-use Laika\Service\Config;
 use Laika\Cli\Stub;
 
 class SecretGenerateCommand implements CommandInterface
@@ -21,32 +20,37 @@ class SecretGenerateCommand implements CommandInterface
             return 1;
         }
 
-        // Check Secret File Exist
-        if (!Config::has('secret')) {
-            Message::error("[secret] Config File Missing");
-        }
+        // Create .key File If Doesn't Exists
+        $file = "{$basePath}/lf-storage/.key";
+        if (!is_file($file)) touch($file);
 
         // Get Byte Number
-        $byte = Argument::getValue('--byte', $args, 32);
+        $byte = Argument::getValue('byte', $args, '32');
 
-        if (!is_numeric($byte)) {
-            Message::error("Byte Should Be Numeric");
+        // Validate Byte is Numeric & In Range
+        if (!preg_match('/^\d+$/', $byte)) {
+            Message::error("Byte should be numeric!");
             return 1;
         }
 
-        $byte = (int) $byte;
-        if (($byte < 16) || ($byte > 64)) {
-            Message::error("Byte Should Be Between 16 to 64");
+        if (!in_array($byte, range(16,64))) {
+            Message::error("Byte should be between 16 to 64");
             return 1;
         }
 
+        // Generate Key
+        $key = base64_encode(bin2hex(random_bytes(16)) . '-' . bin2hex(random_bytes((int) $byte)));
         try {
-            Config::set('secret', 'key', bin2hex(random_bytes($byte)));
-            Message::success("{$byte} Byte Secret Key Generated Successfully");
+            file_put_contents($file, $key);
         } catch (\Throwable $th) {
             Message::error($th->getMessage());
             return 1;
         }
+
+        try {
+            chmod($file, 0600);
+        } catch (\Throwable $th) {}
+        Message::success("{$byte} Byte Secret Key Generated Successfully");
 
         return 0;
     }
