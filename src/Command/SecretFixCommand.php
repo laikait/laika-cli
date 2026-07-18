@@ -21,7 +21,9 @@ class SecretFixCommand implements CommandInterface
         }
 
         // Create .key File If Doesn't Exists
-        $file = "{$basePath}/lf-storage/.key";
+        $dir = "{$basePath}/lf-storage";
+        if (!is_dir($dir)) mkdir($dir, 0755);
+        $file = "{$dir}/.key";
         if (!is_file($file)) touch($file);
 
         // Get Byte Number
