@@ -69,6 +69,17 @@ class ModelMakeCommand implements CommandInterface
             return 1;
         }
 
+        // Get Database Connection Name & Validate
+        $con = Argument::getValue('--connection', $args, 'default');
+        if (empty($con)) {
+            Message::error("Database connection name should not be empty.");
+            return 1;
+        }
+        if (!preg_match('/^[a-z_]+$/i', $con)) {
+            Message::error("Invalid Database connection name [{$con}].");
+            return 1;
+        }
+
         $model_path = $basePath . "/lf-app/Model/{$name}.php";
 
         try {
@@ -76,7 +87,8 @@ class ModelMakeCommand implements CommandInterface
                 'class' =>  $name,
                 'table' =>  $table,
                 'id'    =>  $id,
-                'uid'   =>  $uid
+                'uid'   =>  $uid,
+                'con'   =>  $con
             ]);
 
             Stub::write($model_path, $model_content);
@@ -95,6 +107,7 @@ class ModelMakeCommand implements CommandInterface
                 'table' =>  $table,
                 'id'    =>  $id,
                 'uid'   =>  $uid,
+                'con'   =>  $con
             ]);
 
             Stub::write($schema_path, $schema_content);
@@ -110,7 +123,7 @@ class ModelMakeCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika make:model <name> [--table=table] [--id=id] [--uid=uid]";
+        return "php laika make:model <name> [--table=table] [--id=id] [--uid=uid] [--connection=name]";
     }
 
     public function help(): array
@@ -120,7 +133,12 @@ class ModelMakeCommand implements CommandInterface
             'description'   =>  'Create a new model class',
             'command'       =>  $this->command(),
             'inputs'        =>  [],
-            'params'        =>  []
+            'params'        =>  [
+                                    'table'     =>  'Table name',
+                                    'id'        =>  'Primary column name',
+                                    'uid'       =>  'Unique ID column name',
+                                    'connection'=>  'Database connection name'
+                                ]
         ];
     }
 }

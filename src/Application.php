@@ -4,36 +4,40 @@ declare(strict_types=1);
 
 namespace Laika\Cli;
 
+use Laika\Service\Infra;
 use Laika\Cli\Command\Message;
 use Laika\Cli\Command\Argument;
 use Laika\Cli\Command\HelpCommand;
-use Laika\Cli\Command\CommandInterface;
-use Laika\Cli\Command\FilterListCommand;
 use Laika\Cli\Command\AppSyncCommand;
 use Laika\Cli\Command\RouteListCommand;
-use Laika\Cli\Command\PipelineMakeCommand;
-use Laika\Cli\Command\PipelineRenameCommand;
+use Laika\Cli\Command\ModelListCommand;
+use Laika\Cli\Command\ModelMakeCommand;
+use Laika\Cli\Command\CommandInterface;
+use Laika\Cli\Command\SecretFixCommand;
+use Laika\Cli\Command\RelayListCommand;
+use Laika\Cli\Command\SchemaListCommand;
+use Laika\Cli\Command\FilterListCommand;
 use Laika\Cli\Command\FilterMakeCommand;
+use Laika\Cli\Command\AppMigrateCommand;
+use Laika\Cli\Command\ModelRemoveCommand;
+use Laika\Cli\Command\ServiceMakeCommand;
+use Laika\Cli\Command\ModelRenameCommand;
+use Laika\Cli\Command\PipelineListCommand;
+use Laika\Cli\Command\TemplateListCommand;
+use Laika\Cli\Command\PipelineMakeCommand;
 use Laika\Cli\Command\FilterRemoveCommand;
 use Laika\Cli\Command\FilterRenameCommand;
-use Laika\Cli\Command\ModelMakeCommand;
 use Laika\Cli\Command\TemplateMakeCommand;
-use Laika\Cli\Command\ServiceMakeCommand;
+use Laika\Cli\Command\ServiceRemoveCommand;
+use Laika\Cli\Command\PipelineRenameCommand;
 use Laika\Cli\Command\ControllerMakeCommand;
 use Laika\Cli\Command\ControllerListCommand;
+use Laika\Cli\Command\SecretGenerateCommand;
+use Laika\Cli\Command\PipelineRemoveCommand;
 use Laika\Cli\Command\ControllerRemoveCommand;
 use Laika\Cli\Command\ControllerRenameCommand;
-use Laika\Cli\Command\PipelineListCommand;
-use Laika\Cli\Command\ModelListCommand;
-use Laika\Cli\Command\SchemaListCommand;
-use Laika\Cli\Command\RelayListCommand;
-use Laika\Cli\Command\TemplateListCommand;
-use Laika\Cli\Command\ModelRemoveCommand;
-use Laika\Cli\Command\ModelRenameCommand;
-use Laika\Cli\Command\PipelineRemoveCommand;
-use Laika\Cli\Command\SecretFixCommand;
-use Laika\Cli\Command\SecretGenerateCommand;
-use Laika\Cli\Command\ServiceRemoveCommand;
+
+foreach (Infra::getFunctionFiles() as $file) require_once $file;
 
 class Application
 {
@@ -43,50 +47,51 @@ class Application
     public function __construct(protected string $basePath)
     {
         // Help
-        $this->register(new HelpCommand()); // Done
+        $this->register(new HelpCommand());
         // Service
-        $this->register(new RelayListCommand); // Done
-        $this->register(new ServiceMakeCommand()); // Done
-        $this->register(new ServiceRemoveCommand()); // Done
+        $this->register(new RelayListCommand);
+        $this->register(new ServiceMakeCommand());
+        $this->register(new ServiceRemoveCommand());
 
         // Model
-        $this->register(new ModelListCommand()); // Done
-        $this->register(new ModelMakeCommand()); // Done
-        $this->register(new ModelRemoveCommand()); // Done
-        $this->register(new ModelRenameCommand()); // Done
-        $this->register(new SchemaListCommand); // Done
+        $this->register(new ModelListCommand());
+        $this->register(new ModelMakeCommand());
+        $this->register(new ModelRemoveCommand());
+        $this->register(new ModelRenameCommand());
+        $this->register(new SchemaListCommand);
 
         // Pipeline
-        $this->register(new PipelineListCommand); // Done
-        $this->register(new PipelineMakeCommand()); // Done
-        $this->register(new PipelineRenameCommand()); // Done
-        $this->register(new PipelineRemoveCommand()); // Done
+        $this->register(new PipelineListCommand);
+        $this->register(new PipelineMakeCommand());
+        $this->register(new PipelineRenameCommand());
+        $this->register(new PipelineRemoveCommand());
 
         // Filter
-        $this->register(new FilterListCommand); // Done
-        $this->register(new FilterMakeCommand()); // Done
-        $this->register(new FilterRenameCommand()); // Done
-        $this->register(new FilterRemoveCommand()); // Done
+        $this->register(new FilterListCommand);
+        $this->register(new FilterMakeCommand());
+        $this->register(new FilterRenameCommand());
+        $this->register(new FilterRemoveCommand());
 
         // Controller
-        $this->register(new ControllerListCommand); // Done
-        $this->register(new ControllerMakeCommand()); // Done
-        $this->register(new ControllerRenameCommand()); // Done
-        $this->register(new ControllerRemoveCommand()); // Done
+        $this->register(new ControllerListCommand);
+        $this->register(new ControllerMakeCommand());
+        $this->register(new ControllerRenameCommand());
+        $this->register(new ControllerRemoveCommand());
 
         // Template
         $this->register(new TemplateListCommand);
         $this->register(new TemplateMakeCommand());
 
         // Route
-        $this->register(new RouteListCommand()); // Done
+        $this->register(new RouteListCommand());
 
         // Secret
-        $this->register(new SecretGenerateCommand()); // Done
-        $this->register(new SecretFixCommand()); // Done
+        $this->register(new SecretGenerateCommand());
+        $this->register(new SecretFixCommand());
 
-        // Sync
-        $this->register(new AppSyncCommand()); // Done
+        // App
+        $this->register(new AppSyncCommand());
+        $this->register(new AppMigrateCommand());
     }
 
     protected function register(CommandInterface $command): void

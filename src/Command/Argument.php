@@ -111,4 +111,23 @@ class Argument
 
         return $action;
     }
+
+    /**
+     * Validate Input
+     * @param string[] $args
+     * @param string[] $accepted
+     * @return bool
+     */
+    public static function validateInputs(array $args, array $accepted): bool
+    {
+        $total = count($args);
+
+        foreach ($accepted as $input) {
+            foreach ($args as $arg) {
+                if (!preg_match()) {
+                    return false;
+                }
+            }
+        }
+    }
 }

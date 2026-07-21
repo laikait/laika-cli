@@ -8,6 +8,5 @@
     },
     "autoload": {
         "psr-4": { "Laika\\Cli\\": "src/" }
-    },
-    "bin": ["laika"]
+    }
 }
