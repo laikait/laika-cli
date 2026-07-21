@@ -20,11 +20,15 @@ use Laika\Core\Exceptions\SchemaException;
 
 class {{class}} extends SchemaAbstract
 {
+    /** @var string Database Table Name */
     protected string $table = '{{table}}';
+
+    /** @var string Database Connection Name */
+    protected string $connection = '{{con}}';
 
     public function up(): void
     {
-        Schema::on()->createIfNotExists($this->table, function (Blueprint $t) {
+        Schema::on($this->connection)->createIfNotExists($this->table, function (Blueprint $t) {
             $t->id('{{id}}');
             $t->string('{{uid}}');
             $t->timestamps();

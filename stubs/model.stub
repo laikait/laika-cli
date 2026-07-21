@@ -25,6 +25,9 @@ class {{class}} extends Model
     /** @var string UID Column Name */
     protected string $uid = '{{uid}}';
 
+    /** @var string Database Connection Name */
+    protected string $connection = '{{con}}';
+
     /** @var bool Soft Delete */
     protected bool $softDelete = false;
 

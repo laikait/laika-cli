@@ -1,7 +1,11 @@
 #!/usr/bin/env php
 <?php
-require realpath(__DIR__ . '/../../autoload.php');
 use Laika\Cli\Application;
+
+// Define App Path
+defined('APP_PATH') || define('APP_PATH', getcwd());
+
+require realpath(__DIR__ . '/../../autoload.php');
 
 // Define App Path
 defined('APP_PATH') || define('APP_PATH', getcwd());
