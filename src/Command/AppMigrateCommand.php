@@ -48,8 +48,11 @@ class AppMigrateCommand implements CommandInterface
             // Migrate Schema
             foreach ($tables as $t => $s) {
                 $obj = new $s;
+                $sObj = Schema::on($obj->connection);
+                $sObj->disableForeignKeyChecks();
                 $obj->up();
                 $obj->seed();
+                $sObj->enableForeignKeyChecks();
                 $list[] = $t;
             }
             // Success Message
