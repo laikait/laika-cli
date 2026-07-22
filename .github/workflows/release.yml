@@ -23,7 +23,7 @@ jobs:
       - name: Prepare release artifact
         run: |
           mkdir build
-          cp -r src composer.json LICENSE README.md build/
+          cp -r .github src stubs composer.json LICENSE README.md laika .gitignore build/
           echo "${{ github.run_number }}" > build/VERSION
           cd build && zip -r ../${{ env.ARTIFACT }}.zip .
 
