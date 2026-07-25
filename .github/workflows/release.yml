@@ -17,13 +17,13 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
 
       # Prepare Build Artifact
       - name: Prepare release artifact
         run: |
           mkdir build
-          cp -r .github src stubs composer.json LICENSE README.md laika .gitignore build/
+          cp -r .github src stubs .gitignore composer.json LICENSE README.md laika .gitignore build/
           echo "${{ github.run_number }}" > build/VERSION
           cd build && zip -r ../${{ env.ARTIFACT }}.zip .
 
@@ -33,7 +33,7 @@ jobs:
 
       # Upload Artifact
       - name: Upload build artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: ${{ env.ARTIFACT }}
           path: |
@@ -43,7 +43,7 @@ jobs:
 
       # Create GitHub Release
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@718ea10b132b3b2eba29c1007bb80653f286566b # v3.0.1
+        uses: softprops/action-gh-release@718ea10b132b3b2eba29c1007bb80653f286566b
         with:
           draft: false
           overwrite_files: true
