@@ -43,7 +43,6 @@ class AppMigrateCommand implements CommandInterface
         }
 
         // Create Table
-        $list = [];
         try {
             // Migrate Schema
             foreach ($tables as $t => $s) {
@@ -53,14 +52,9 @@ class AppMigrateCommand implements CommandInterface
                 $obj->up();
                 $obj->seed();
                 $sObj->enableForeignKeyChecks();
-                $list[] = $t;
             }
             // Success Message
-            Message::success("Migrated Database Table(s):");
-            echo "----------------------------\n";
-            foreach ($list as $t) {
-                echo "\t{$t}\n";
-            }
+            Message::success("Migrated Database Table(s)");
         } catch (\Throwable $th) {
             Message::error($th->getMessage());
             return 1;
