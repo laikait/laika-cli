@@ -6,6 +6,7 @@ namespace Laika\Cli\Command;
 
 use Laika\Route\Path;
 use Laika\Route\Handler;
+use Laika\Service\Infra;
 
 class RouteListCommand implements CommandInterface
 {
@@ -16,7 +17,7 @@ class RouteListCommand implements CommandInterface
 
     public function handle(array $args, string $basePath): int
     {
-        if (count($args) > 0) {
+        if (count($args) > 1) {
             Message::suggestion($this->command());
             return 1;
         }
@@ -24,10 +25,11 @@ class RouteListCommand implements CommandInterface
         $dir = $basePath . '/lf-routes';
 
         // Load Routes
-        Path::loadRoutes($dir);
+        // Path::loadRoutes($dir);
+        foreach (Infra::getRouteFiles() as $rf) require_once $rf;
 
         // Get Method
-        $method = Argument::getValue('--method', $args);
+        $method = Argument::getValue('method', $args);
 
         $routes = $method ? [strtoupper($method) => Handler::getOnlyRoutes($method)] : Handler::getRoutes();
 
@@ -39,18 +41,18 @@ class RouteListCommand implements CommandInterface
 
         $total = 0;
 
-        $head = sprintf("%-8s | %-30s | %-40s | %-40s\n", '# METHOD', '# URI', '# RESPONSE', '# NAME');
+        $head = sprintf("%-8s | %-50s | %-40s | %-40s\n", '# METHOD', '# URI', '# RESPONSE', '# NAME');
         echo str_repeat('-', strlen($head)) . "\n";
         echo $head;
         echo str_repeat('-', strlen($head)) . "\n";
 
         foreach ($routes as $method => $uris) {
             foreach ($uris as $uri => $data) {
-                $response = is_string($data['response'])
-                    ? $data['response']
-                    : (is_array($data['response']) ? implode('@', $data['response']) : 'Closure');
+                $controller = is_string($data['controller'])
+                    ? $data['controller']
+                    : (is_array($data['controller']) ? implode('@', $data['controller']) : 'Closure');
 
-                printf("%-8s | %-30s | %-40s | %-40s\n", $method, $uri, $response, $data['name'] ?? '----');
+                printf("%-8s | %-50s | %-40s | %-40s\n", $method, $uri, $controller, $data['name'] ?? '----');
                 $total++;
             }
         }
@@ -62,7 +64,7 @@ class RouteListCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika list:route";
+        return "php laika list:route [--method=get]";
     }
 
     public function help(): array
@@ -72,7 +74,7 @@ class RouteListCommand implements CommandInterface
             'description'   =>  'List of registered routes',
             'command'       =>  $this->command(),
             'inputs'        =>  [],
-            'params'        =>  []
+            'params'        =>  ['method' => 'Get routes by method.']
         ];
     }
 }

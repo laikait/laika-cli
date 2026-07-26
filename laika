@@ -3,10 +3,9 @@
 use Laika\Cli\Application;
 
 // Define App Path & Directory Separator
-defined('APP_PATH') || define('APP_PATH', __DIR__);
-defined('DS') || define('DS', DIRECTORY_SEPARATOR);
+defined('APP_PATH') || define('APP_PATH', realpath(__DIR__ . '/../../../'));
 
-require realpath(APP_PATH . '/vendor/autoload.php');
+require APP_PATH . '/lf-boot/app.php';
 
 $app = new Application(APP_PATH);
 
