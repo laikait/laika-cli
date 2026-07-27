@@ -50,6 +50,13 @@ class AppMigrateCommand implements CommandInterface
                 $sObj = Schema::on($obj->connection);
                 $sObj->disableForeignKeyChecks();
                 $obj->up();
+                $sObj->enableForeignKeyChecks();
+            }
+            // Seed Data
+            foreach ($tables as $t => $s) {
+                $obj = new $s;
+                $sObj = Schema::on($obj->connection);
+                $sObj->disableForeignKeyChecks();
                 $obj->seed();
                 $sObj->enableForeignKeyChecks();
             }
