@@ -19,6 +19,7 @@ use Laika\Cli\Command\SchemaListCommand;
 use Laika\Cli\Command\FilterListCommand;
 use Laika\Cli\Command\FilterMakeCommand;
 use Laika\Cli\Command\AppMigrateCommand;
+use Laika\Cli\Command\AppStartCommand;
 use Laika\Cli\Command\ModelRemoveCommand;
 use Laika\Cli\Command\ServiceMakeCommand;
 use Laika\Cli\Command\ModelRenameCommand;
@@ -92,6 +93,7 @@ class Application
         // App
         $this->register(new AppSyncCommand());
         $this->register(new AppMigrateCommand());
+        $this->register(new AppStartCommand());
     }
 
     protected function register(CommandInterface $command): void

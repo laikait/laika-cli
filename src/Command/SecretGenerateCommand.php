@@ -22,7 +22,10 @@ class SecretGenerateCommand implements CommandInterface
 
         // Create .key File If Doesn't Exists
         $dir = "{$basePath}/lf-storage";
-        if (!is_dir($dir)) mkdir($dir, 0755);
+        if (!is_dir($dir)) {
+            mkdir($dir);
+            setPermission($dir, 0755);
+        }
         $file = "{$dir}/.key";
         if (!is_file($file)) touch($file);
 
@@ -43,15 +46,14 @@ class SecretGenerateCommand implements CommandInterface
         // Generate Key
         $key = base64_encode(bin2hex(random_bytes(16)) . '-' . bin2hex(random_bytes((int) $byte)));
         try {
+            setPermission($file, 0640);
             file_put_contents($file, $key);
         } catch (\Throwable $th) {
             Message::error($th->getMessage());
             return 1;
         }
 
-        try {
-            chmod($file, 0600);
-        } catch (\Throwable $th) {}
+        setPermission($file, 0600);
         Message::success("{$byte} Byte Secret Key Generated Successfully");
 
         return 0;

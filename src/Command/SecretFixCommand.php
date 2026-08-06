@@ -22,7 +22,10 @@ class SecretFixCommand implements CommandInterface
 
         // Create .key File If Doesn't Exists
         $dir = "{$basePath}/lf-storage";
-        if (!is_dir($dir)) mkdir($dir, 0755);
+        if (!is_dir($dir)) {
+            mkdir($dir);
+            setPermission($dir, 0755);
+        }
         $file = "{$dir}/.key";
         if (!is_file($file)) touch($file);
 
@@ -46,6 +49,7 @@ class SecretFixCommand implements CommandInterface
 
         // Generate Key if Existing Key Not Found
         if (!$key) {
+            setPermission($file, 0640);
             file_put_contents($file, $newkey);
             Message::success("{$byte} byte secret key generated successfully");
             return 0;
@@ -54,11 +58,13 @@ class SecretFixCommand implements CommandInterface
         // Generate Key if Key is Invalid
         $parts = explode('-', $key);
         if ((count($parts) != 2)) {
+            setPermission($file, 0600);
             file_put_contents($file, $newkey);
             Message::success("{$byte} byte secret key regenerated successfully");
             return 0;
         }
         if (strlen($parts[1]) != $byte * 2) {
+            setPermission($file, 0600);
             file_put_contents($file, $newkey);
             Message::success("{$byte} byte secret key regenerated successfully");
             return 0;
