@@ -1,12 +1,20 @@
 {
     "name": "laikait/laika-cli",
     "description": "CLI generator tool for the Laika PHP MVC Framework",
-    "type": "library",
+    "type": "composer-plugin",
     "license": "MIT",
     "require": {
-        "php": ">=8.1"
+        "php": ">=8.1",
+        "composer-plugin-api": "^2.0"
+    },
+    "require-dev": {
+        "composer/composer": "^2.0"
     },
     "autoload": {
         "psr-4": { "Laika\\Cli\\": "src/" }
+    },
+    "bin": ["laika"],
+    "extra": {
+        "class": "Laika\\Cli\\Plugin\\LaikaPlugin"
     }
 }
