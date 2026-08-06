@@ -14,6 +14,11 @@
         "psr-4": { "Laika\\Cli\\": "src/" }
     },
     "bin": ["laika"],
+    "config": {
+        "allow-plugins": {
+            "laikait/laika-cli": true
+        }
+    },
     "extra": {
         "class": "Laika\\Cli\\Plugin\\LaikaPlugin"
     }
