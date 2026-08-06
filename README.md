@@ -13,6 +13,18 @@ generated automatically in your project root — no manual step needed.
 php laika help
 ```
 
+> Composer 2.2+ requires explicit trust for packages that ship a plugin. If
+> you see a warning about `laikait/laika-cli` not being allowed to run code,
+> add it to your project's `composer.json`:
+> ```json
+> "config": {
+>     "allow-plugins": {
+>         "laikait/laika-cli": true
+>     }
+> }
+> ```
+> (Already set up for you if you started from `laikait/laika-framework`.)
+
 ## Global install
 Prefer a single `laika` command available in every project? Install it
 globally instead:
