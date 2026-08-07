@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
+use Laika\Cli\Table;
 use Laika\Service\Infra;
 
 class ControllerListCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'list:controller';
+        return 'controller:list';
     }
 
     public function handle(array $args, string $basePath): int
@@ -22,39 +23,31 @@ class ControllerListCommand implements CommandInterface
 
         $controllers = Infra::getControllerClasses();
 
-        // Check Controllers Exists
         if (empty($controllers)) {
-            Message::info("No controller found!");
+            Message::info("No controllers found!");
             return 0;
         }
 
-        $total = 0;
-
-        $head = sprintf("%-4s | %-50s\n", '# SL', '# CONTROLLER CLASSES');
-        echo str_repeat('-', strlen($head)) . "\n";
-        echo $head;
-        echo str_repeat('-', strlen($head)) . "\n";
-
+        $rows = [];
         foreach ($controllers as $c) {
-            $total++;
-            printf("%-4s | %-50s\n", $total, $c);
+            $rows[] = [count($rows) + 1, $c];
         }
-        echo str_repeat('-', strlen($head)) . "\n";
-        echo "Total: {$total}\n";
+
+        Table::render('CONTROLLER CLASSES', ['# SL', '# CONTROLLER CLASS'], $rows);
 
         return 0;
     }
 
     public function command(): string
     {
-        return "php laika list:controller";
+        return "php laika controller:list";
     }
 
     public function help(): array
     {
         return [
             'signature'     =>  $this->signature(),
-            'description'   =>  'List of registered controller cLasses',
+            'description'   =>  'List of registered controller classes',
             'command'       =>  $this->command(),
             'inputs'        =>  [],
             'params'        =>  []

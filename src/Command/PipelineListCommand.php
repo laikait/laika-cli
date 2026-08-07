@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
+use Laika\Cli\Table;
 use Laika\Service\Infra;
 
 class PipelineListCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'list:pipeline';
+        return 'pipeline:list';
     }
 
     public function handle(array $args, string $basePath): int
@@ -20,35 +21,26 @@ class PipelineListCommand implements CommandInterface
             return 1;
         }
 
-        // Get Pipelines
         $pipelines = Infra::getPipelineClasses();
 
-        // Check Pipeline Exists
         if (empty($pipelines)) {
-            Message::info("No Pipelines Foind.");
-            return 1;
+            Message::info("No pipelines found!");
+            return 0;
         }
 
-        $total = 0;
-
-        $head = sprintf("%-4s | %-50s\n", '# SL', '# PIPELINE CLASS');
-        echo str_repeat('-', strlen($head)) . "\n";
-        echo $head;
-        echo str_repeat('-', strlen($head)) . "\n";
-
+        $rows = [];
         foreach ($pipelines as $pipeline) {
-            $total++;
-            printf("%-4s | %-50s\n", $total, $pipeline);
+            $rows[] = [count($rows) + 1, $pipeline];
         }
-        echo str_repeat('-', strlen($head)) . "\n";
-        echo "Total: {$total}\n";
+
+        Table::render('PIPELINE CLASSES', ['# SL', '# PIPELINE CLASS'], $rows);
 
         return 0;
     }
 
     public function command(): string
     {
-        return "php laika list:pipeline";
+        return "php laika pipeline:list";
     }
 
     public function help(): array

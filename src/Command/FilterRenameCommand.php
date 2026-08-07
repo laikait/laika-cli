@@ -10,7 +10,7 @@ class FilterRenameCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'rename:filter';
+        return 'filter:rename';
     }
 
     public function handle(array $args, string $basePath): int
@@ -67,7 +67,7 @@ class FilterRenameCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika rename:filter <--old=name> <--new=name>";
+        return "php laika filter:rename <--old=name> <--new=name>";
     }
 
     public function help(): array

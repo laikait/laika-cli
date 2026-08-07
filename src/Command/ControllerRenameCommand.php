@@ -10,7 +10,7 @@ class ControllerRenameCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'rename:controller';
+        return 'controller:rename';
     }
 
     public function handle(array $args, string $basePath): int
@@ -74,7 +74,7 @@ class ControllerRenameCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika rename:controller [--old=name] [--new=name]";
+        return "php laika controller:rename [--old=name] [--new=name]";
     }
 
     public function help(): array

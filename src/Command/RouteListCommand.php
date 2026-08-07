@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
+use Laika\Cli\Table;
 use Laika\Route\Path;
 use Laika\Route\Handler;
 use Laika\Service\Infra;
@@ -12,7 +13,7 @@ class RouteListCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'list:route';
+        return 'route:list';
     }
 
     public function handle(array $args, string $basePath): int
@@ -35,36 +36,29 @@ class RouteListCommand implements CommandInterface
 
         // Check Route Exists
         if (empty($routes)) {
-            Message::info('No Routes Found.');
+            Message::info('No routes found!');
             return 0;
         }
 
-        $total = 0;
-
-        $head = sprintf("%-8s | %-50s | %-40s | %-40s\n", '# METHOD', '# URI', '# RESPONSE', '# NAME');
-        echo str_repeat('-', strlen($head)) . "\n";
-        echo $head;
-        echo str_repeat('-', strlen($head)) . "\n";
-
+        $rows = [];
         foreach ($routes as $method => $uris) {
             foreach ($uris as $uri => $data) {
                 $controller = is_string($data['controller'])
                     ? $data['controller']
                     : (is_array($data['controller']) ? implode('@', $data['controller']) : 'Closure');
 
-                printf("%-8s | %-50s | %-40s | %-40s\n", $method, $uri, $controller, $data['name'] ?? '----');
-                $total++;
+                $rows[] = [$method, $uri, $controller, $data['name'] ?? '----'];
             }
         }
-        echo str_repeat('-', strlen($head)) . "\n";
-        echo "Total: {$total}\n";
+
+        Table::render('ROUTES', ['# METHOD', '# URI', '# RESPONSE', '# NAME'], $rows);
 
         return 0;
     }
 
     public function command(): string
     {
-        return "php laika list:route [--method=get]";
+        return "php laika route:list [--method=get]";
     }
 
     public function help(): array

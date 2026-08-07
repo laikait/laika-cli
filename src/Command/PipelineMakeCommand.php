@@ -10,7 +10,7 @@ class PipelineMakeCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'make:pipeline';
+        return 'pipeline:make';
     }
 
     public function handle(array $args, string $basePath): int
@@ -53,7 +53,7 @@ class PipelineMakeCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika make:pipeline <name>";
+        return "php laika pipeline:make <name>";
     }
 
     public function help(): array

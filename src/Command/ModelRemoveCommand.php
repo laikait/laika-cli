@@ -10,7 +10,7 @@ class ModelRemoveCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'remove:model';
+        return 'model:remove';
     }
 
     public function handle(array $args, string $basePath): int
@@ -64,7 +64,7 @@ class ModelRemoveCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika remove:model <name>";
+        return "php laika model:remove <name>";
     }
 
     public function help(): array

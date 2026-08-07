@@ -10,7 +10,7 @@ class SecretFixCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'fix:secret';
+        return 'secret:fix';
     }
 
     public function handle(array $args, string $basePath): int
@@ -77,7 +77,7 @@ class SecretFixCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika fix:secret [--byte=number]";
+        return "php laika secret:fix [--byte=number]";
     }
 
     public function help(): array

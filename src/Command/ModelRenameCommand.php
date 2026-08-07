@@ -8,7 +8,7 @@ class ModelRenameCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return "rename:model";
+        return "model:rename";
     }
 
     public function handle(array $args, string $basePath): int
@@ -120,7 +120,7 @@ class ModelRenameCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika rename:model <--old=name> <--new=name> [--table=table] [--id=id] [--uid=uid]";
+        return "php laika model:rename <--old=name> <--new=name> [--table=table] [--id=id] [--uid=uid]";
     }
 
     public function help(): array

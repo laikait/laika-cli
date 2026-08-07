@@ -10,7 +10,7 @@ class SecretGenerateCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'generate:secret';
+        return 'secret:generate';
     }
 
     public function handle(array $args, string $basePath): int
@@ -61,7 +61,7 @@ class SecretGenerateCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika generate:secret [--byte=32]";
+        return "php laika secret:generate [--byte=32]";
     }
 
     public function help(): array

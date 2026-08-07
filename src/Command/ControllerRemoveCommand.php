@@ -10,7 +10,7 @@ class ControllerRemoveCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'remove:controller';
+        return 'controller:remove';
     }
 
     public function handle(array $args, string $basePath): int
@@ -60,7 +60,7 @@ class ControllerRemoveCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika remove:controller <name>";
+        return "php laika controller:remove <name>";
     }
 
     public function help(): array

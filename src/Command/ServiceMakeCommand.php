@@ -11,7 +11,7 @@ class ServiceMakeCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'make:service';
+        return 'service:make';
     }
 
     public function handle(array $args, string $basePath): int
@@ -103,7 +103,7 @@ class ServiceMakeCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika make:service <--name=ServiceClass> <--class=RelayClass>";
+        return "php laika service:make <--name=ServiceClass> <--class=RelayClass>";
     }
 
     public function help(): array

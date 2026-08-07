@@ -10,7 +10,7 @@ class ControllerMakeCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'make:controller';
+        return 'controller:make';
     }
 
     public function handle(array $args, string $basePath): int
@@ -87,7 +87,7 @@ class ControllerMakeCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika make:controller <name> [--method=index]";
+        return "php laika controller:make <name> [--method=index]";
     }
 
     public function help(): array

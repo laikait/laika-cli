@@ -10,7 +10,7 @@ class ModelMakeCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'make:model';
+        return 'model:make';
     }
 
     public function description(): string
@@ -123,7 +123,7 @@ class ModelMakeCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika make:model <name> [--table=table] [--id=id] [--uid=uid] [--connection=name]";
+        return "php laika model:make <name> [--table=table] [--id=id] [--uid=uid] [--connection=name]";
     }
 
     public function help(): array

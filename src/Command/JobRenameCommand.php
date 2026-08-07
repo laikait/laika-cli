@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
-class PipelineRenameCommand implements CommandInterface
+class JobRenameCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return "pipeline:rename";
+        return 'job:rename';
     }
 
     public function handle(array $args, string $basePath): int
@@ -18,65 +18,70 @@ class PipelineRenameCommand implements CommandInterface
             return 1;
         }
 
-        // Get Old & New Pipeline Names
+        // Get Old & New Job Names
         $old = Argument::getValue('--old', $args);
         $new = Argument::getValue('--new', $args);
 
-        // Check Old & New Names are Not Empty
+        // Validate Old & New Job Name
         if (empty($old) || empty($new)) {
             Message::error("Old/New name should not be empty!");
             return 1;
         }
 
-        // Check Valid Names
-        if (!preg_match('/^[a-z_]+$/i', $old) || !preg_match('/^[a-z_]+$/i', $old)) {
-            Message::error("Old/New Name Should Contain Characters Only!");
+        if (!preg_match('/^[a-z_]+$/i', $old) || !preg_match('/^[a-z_]+$/i', $new)) {
+            Message::error("Job name should contain characters only!");
             return 1;
         }
 
-        $oldPath = $basePath . "/lf-app/Pipeline/{$old}.php";
-        $newPath = $basePath . "/lf-app/Pipeline/{$new}.php";
+        $oldPath = "{$basePath}/lf-app/Job/{$old}.php";
+        $newPath = "{$basePath}/lf-app/Job/{$new}.php";
 
-        // Check Old Pipeline Exists
+        // Check Old Job Exists
         if (!is_file($oldPath)) {
-            Message::error("Pipeline [{$old}] Doesn't Exists!");
+            Message::error("Job [{$old}] doesn't exists.");
             return 1;
         }
 
-        // Check New Pipeline Doesn't Exists
+        // Check New Job Doesn't Exists
         if (is_file($newPath)) {
-            Message::error("Pipeline [{$new}] Already Exists!");
+            Message::error("Job [{$new}] already exists.");
             return 1;
+        }
+
+        // Confirm From User
+        if (!Argument::readline("Continue [{$old} -> {$new}]?")) {
+            Message::warning("Canceled by user!", 'console');
+            return 0;
         }
 
         try {
             $content = file_get_contents($oldPath);
-            $content = preg_replace("/\bclass\s+" . preg_quote($old, '/') . "\b/i", "class {$new}", $content);
+            $content = preg_replace('/\bclass\s+' . preg_quote($old, '/') . '\b/', "class {$new}", $content);
 
             rename($oldPath, $newPath);
             file_put_contents($newPath, $content);
-            Message::success("Renamed Pipeline: [{$old} -> {$new}]");
+
+            Message::success("Job renamed [{$old} -> {$new}] successfully.");
         } catch (\Throwable $th) {
             Message::error($th->getMessage());
             return 1;
         }
-
         return 0;
     }
 
     public function command(): string
     {
-        return "php laika pipeline:rename <--old=name> <--new=name>";
+        return "php laika job:rename <--old=name> <--new=name>";
     }
 
     public function help(): array
     {
         return [
             'signature'     =>  $this->signature(),
-            'description'   =>  'Rename a pipeline and update its class',
+            'description'   =>  'Rename a job class',
             'command'       =>  $this->command(),
             'inputs'        =>  [],
-            'params'        =>  ['old' => '(Required) old pipeline name', 'new' => '(Required) new pipeline name']
+            'params'        =>  ['old' => 'Old job name', 'new' => 'New job name']
         ];
     }
 }

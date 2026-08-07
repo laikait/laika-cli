@@ -98,8 +98,11 @@ class Argument
                 Message::error("Action failed. Tried maximum attampt {$attampt}");
                 exit();
             }
-            $status = readline($message . ' ' . implode('/', $accepted) . ': ');
-            $status = strtolower($status);
+            // readline() returns false (not a string) on EOF/no TTY — e.g.
+            // this command run from a script or CI without input piped in.
+            // Casting keeps that a normal failed-attempt loop instead of a
+            // strtolower(): bool given TypeError.
+            $status = strtolower((string) readline($message . ' ' . implode('/', $accepted) . ': '));
             if (in_array($status, $accepted)) {
                 if (in_array($status, $positive)) $action = true;
                 break;
