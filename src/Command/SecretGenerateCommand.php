@@ -21,12 +21,12 @@ class SecretGenerateCommand implements CommandInterface
         }
 
         // Create .key File If Doesn't Exists
-        $dir = "{$basePath}/lf-storage";
+        $dir = "{$basePath}/lf-storage/keys";
         if (!is_dir($dir)) {
-            mkdir($dir);
-            setPermission($dir, 0755);
+            mkdir($dir, recursive: true);
+            setPermission($dir, 0775);
         }
-        $file = "{$dir}/.key";
+        $file = "{$dir}/app.key";
         if (!is_file($file)) touch($file);
 
         // Get Byte Number
