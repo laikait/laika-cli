@@ -11,7 +11,7 @@ class ServiceRemoveCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'remove:service';
+        return 'service:remove';
     }
 
     public function handle(array $args, string $basePath): int
@@ -57,7 +57,7 @@ class ServiceRemoveCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika remove:service <name>";
+        return "php laika service:remove <name>";
     }
 
     public function help(): array

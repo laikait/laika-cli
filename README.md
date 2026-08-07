@@ -35,29 +35,26 @@ Make sure Composer's global `vendor/bin` directory is on your `PATH` (see the
 [Composer docs](https://getcomposer.org/doc/03-cli.md#global)), then run
 `laika` from inside any Laika project directory (or a sub-directory of one):
 ```bash
-laika make:model User
+laika model:make User
 ```
 The global binary detects the current project by walking up from your
 working directory until it finds `lf-boot/app.php` — no `php` prefix needed.
 
 ## Usage
 ```bash
-php laika make:route users
-php laika make:pipeline Auth
-php laika make:filter Log
-php laika make:model User --table=users --id=id --uid=uid
-php laika make:schema orders
-php laika make:template admin/dashboard
-php laika make:service Mailer
-php laika make:controller UserController
+php laika route:make users
+php laika pipeline:make Auth
+php laika filter:make Log
+php laika model:make User --table=users --id=id --uid=uid
+php laika template:make admin/dashboard
+php laika service:make --name=Mailer --class=App\\Model\\MailerModel
+php laika controller:make UserController
 
-php laika list:routes
-php laika list:pipeline
-php laika list:models
+php laika route:list
+php laika pipeline:list
+php laika model:list
 
-php laika remove:model User
-php laika remove:route users
+php laika model:remove User
 
-php laika rename:model User Customer
-php laika rename:route users clients
+php laika model:rename --old=User --new=Customer
 ```

@@ -8,7 +8,7 @@ class PipelineRemoveCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return "remove:pipeline";
+        return "pipeline:remove";
     }
 
     public function handle(array $args, string $basePath): int
@@ -42,7 +42,7 @@ class PipelineRemoveCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika remove:pipeline <name>";
+        return "php laika pipeline:remove <name>";
     }
 
     public function help(): array

@@ -11,7 +11,7 @@ class TemplateMakeCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'make:template';
+        return 'template:make';
     }
 
     public function handle(array $args, string $basePath): int
@@ -91,7 +91,7 @@ class TemplateMakeCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika make:template <name> [--ext=twig --path=path]";
+        return "php laika template:make <name> [--ext=twig --path=path]";
     }
 
     public function help(): array

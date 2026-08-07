@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
+use Laika\Cli\Table;
 use Laika\Service\Infra;
 
 class FilterListCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'list:filter';
+        return 'filter:list';
     }
 
     public function handle(array $args, string $basePath): int
@@ -20,40 +21,33 @@ class FilterListCommand implements CommandInterface
             return 1;
         }
 
-        $total = 0;
-
         $filters = Infra::getFilterClasses();
 
         if (empty($filters)) {
             Message::info("No filters found!");
-            return 1;
+            return 0;
         }
 
-        $head = sprintf("%-4s | %-50s\n", Message::txt_yellow('# SL'), Message::txt_yellow('# FILTER CLASSES'));
-        echo "\n" . str_repeat('-', strlen($head)) . "\n";
-        echo $head;
-        echo str_repeat('-', strlen($head)) . "\n";
-
+        $rows = [];
         foreach ($filters as $f) {
-            $total++;
-            printf("%-4s | %-50s\n", $total, $f);
+            $rows[] = [count($rows) + 1, $f];
         }
-        echo str_repeat('-', strlen($head)) . "\n";
-        echo "Total: {$total}\n";
+
+        Table::render('FILTER CLASSES', ['# SL', '# FILTER CLASS'], $rows);
 
         return 0;
     }
 
     public function command(): string
     {
-        return "php laika list:filter";
+        return "php laika filter:list";
     }
 
     public function help(): array
     {
         return [
             'signature'     =>  $this->signature(),
-            'description'   =>  'List of registers filter cLasses',
+            'description'   =>  'List of registered filter classes',
             'command'       =>  $this->command(),
             'inputs'        =>  [],
             'params'        =>  []

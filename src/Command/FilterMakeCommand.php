@@ -10,7 +10,7 @@ class FilterMakeCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'make:filter';
+        return 'filter:make';
     }
 
     public function handle(array $args, string $basePath): int
@@ -51,7 +51,7 @@ class FilterMakeCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika make:filter <name>";
+        return "php laika filter:make <name>";
     }
 
     public function help(): array

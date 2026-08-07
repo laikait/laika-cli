@@ -10,6 +10,7 @@ use Laika\Cli\Command\Argument;
 use Laika\Cli\Command\HelpCommand;
 use Laika\Cli\Command\AppSyncCommand;
 use Laika\Cli\Command\RouteListCommand;
+use Laika\Cli\Command\RouteMakeCommand;
 use Laika\Cli\Command\ModelListCommand;
 use Laika\Cli\Command\ModelMakeCommand;
 use Laika\Cli\Command\CommandInterface;
@@ -37,6 +38,14 @@ use Laika\Cli\Command\SecretGenerateCommand;
 use Laika\Cli\Command\PipelineRemoveCommand;
 use Laika\Cli\Command\ControllerRemoveCommand;
 use Laika\Cli\Command\ControllerRenameCommand;
+use Laika\Cli\Command\JobListCommand;
+use Laika\Cli\Command\JobMakeCommand;
+use Laika\Cli\Command\JobRemoveCommand;
+use Laika\Cli\Command\JobRenameCommand;
+use Laika\Cli\Command\QueueWorkCommand;
+use Laika\Cli\Command\QueueFailedCommand;
+use Laika\Cli\Command\QueueRetryCommand;
+use Laika\Cli\Command\QueueFlushCommand;
 
 foreach (Infra::getFunctionFiles() as $file) require_once $file;
 
@@ -79,12 +88,25 @@ class Application
         $this->register(new ControllerRenameCommand());
         $this->register(new ControllerRemoveCommand());
 
+        // Job
+        $this->register(new JobListCommand);
+        $this->register(new JobMakeCommand());
+        $this->register(new JobRenameCommand());
+        $this->register(new JobRemoveCommand());
+
+        // Queue / Worker
+        $this->register(new QueueWorkCommand());
+        $this->register(new QueueFailedCommand());
+        $this->register(new QueueRetryCommand());
+        $this->register(new QueueFlushCommand());
+
         // Template
         $this->register(new TemplateListCommand);
         $this->register(new TemplateMakeCommand());
 
         // Route
         $this->register(new RouteListCommand());
+        $this->register(new RouteMakeCommand());
 
         // Secret
         $this->register(new SecretGenerateCommand());
