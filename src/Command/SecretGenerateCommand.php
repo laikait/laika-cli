@@ -20,7 +20,7 @@ class SecretGenerateCommand implements CommandInterface
             return 1;
         }
 
-        // Create .key File If Doesn't Exists
+        // Create app.key File If Doesn't Exists
         $dir = "{$basePath}/lf-storage/keys";
         if (!is_dir($dir)) {
             mkdir($dir, recursive: true);
