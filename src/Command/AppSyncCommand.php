@@ -74,6 +74,30 @@ class AppSyncCommand implements CommandInterface
             }
         }
 
+        // Create app.key File If Doesn't Exists
+        $dir = "{$basePath}/lf-storage/keys";
+        if (!is_dir($dir)) {
+            mkdir($dir, recursive: true);
+            setPermission($dir, 0775);
+        }
+        $file = "{$dir}/app.key";
+        if (!is_file($file)) touch($file);
+
+        $keyContent = file_get_contents($file);
+        if (empty($keyContent)) {
+            // Generate Key
+            $key = base64_encode(bin2hex(random_bytes(16)) . '-' . bin2hex(random_bytes(32)));
+            try {
+                setPermission($file, 0640);
+                file_put_contents($file, $key);
+            } catch (\Throwable $th) {
+                Message::error($th->getMessage());
+                return 1;
+            }
+
+            setPermission($file, 0600);
+        }
+
         Message::success("App Sync Successfull.");
 
         return 0;
