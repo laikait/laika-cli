@@ -5,25 +5,51 @@ CLI generator for the Laika PHP MVC Framework.
 ## Install
 
 `laika-cli` ships as a dependency of `laikait/laika-core`, so every Laika
-project already has it. The first time Composer builds the autoloader
-(`composer install`/`update`, or `create-project`), a `laika` executable is
-generated automatically in your project root — no manual step needed.
+project already has it. If you started from `laikait/laika-framework`, the
+wiring below is already in your `composer.json` and the executable is
+generated for you on `composer install`, `update`, `dump-autoload` and
+`create-project` — no manual step needed.
 
 ```bash
 php laika help
 ```
 
-> Composer 2.2+ requires explicit trust for packages that ship a plugin. If
-> you see a warning about `laikait/laika-cli` not being allowed to run code,
-> add it to your project's `composer.json`:
-> ```json
-> "config": {
->     "allow-plugins": {
->         "laikait/laika-cli": true
->     }
-> }
-> ```
-> (Already set up for you if you started from `laikait/laika-framework`.)
+### Wiring it up manually
+
+Composer only runs scripts declared by the **root** project, never by a
+dependency. So a project that wasn't created from the framework skeleton
+needs to call the generator itself:
+
+```json
+"scripts": {
+    "post-autoload-dump": [
+        "Laika\\Cli\\ScriptHandler::generate"
+    ],
+    "post-create-project-cmd": [
+        "Laika\\Cli\\ScriptHandler::generate"
+    ]
+}
+```
+
+Keep `ScriptHandler::generate` **first** in `post-autoload-dump` if later
+entries in that list invoke `laika` themselves — it has to exist before they
+run.
+
+### What gets generated
+
+| File | Platform | How you run it |
+| --- | --- | --- |
+| `laika` | all | `php laika help` — or `./laika help` on Linux/macOS |
+| `laika.bat` | Windows only | `laika help` in cmd, `.\laika help` in PowerShell |
+
+Both are thin proxies into `vendor/laikait/laika-cli`, so they always match
+the version this project has installed. They are rewritten only when their
+content actually changes, and regenerate if you delete them.
+
+> Versions before 3.0 shipped this package as a Composer *plugin*, which
+> required an `allow-plugins` entry in every consuming project. That is no
+> longer needed — you can drop `"laikait/laika-cli": true` from your
+> `config.allow-plugins`.
 
 ## Global install
 Prefer a single `laika` command available in every project? Install it
