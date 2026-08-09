@@ -1,8 +1,19 @@
 {
     "name": "laikait/laika-cli",
-    "description": "CLI generator tool for the Laika PHP MVC Framework",
+    "description": "CLI generator tool for the Laika PHP Framework",
     "type": "library",
     "license": "MIT",
+    "keywords": ["laika", "cli", "command line", "command tool", "php"],
+    "authors": [
+        {
+            "name": "Laika IT",
+            "email": "strblackhawk@gmail.com"
+        },
+        {
+            "name": "Showket Ahmed",
+            "email": "riyadhtayf@gmail.com"
+        }
+    ],
     "require": {
         "php": ">=8.1"
     },
