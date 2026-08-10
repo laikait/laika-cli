@@ -1,0 +1,41 @@
+# Laika server block. Drop this in /etc/nginx/sites-available/ and symlink
+# it into sites-enabled/, or paste it into your existing nginx config.
+#
+#   nginx -t && systemctl reload nginx
+
+server {
+    listen {{port}};
+    listen [::]:{{port}};
+
+    server_name {{domain}};
+    root {{root}};
+
+    index index.php;
+    charset utf-8;
+
+    client_max_body_size {{upload}};
+
+    # Framework-managed rules (deny lists, try_files). Regenerate with
+    # `php laika nginx:make`. This include MUST stay above the PHP handler
+    # below -- nginx uses the first matching regex location, so the deny
+    # rules only take effect if they are seen first.
+    include {{root}}/nginx.conf;
+
+    location ~ \.php$ {
+        try_files $uri =404;
+
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass {{fastcgi}};
+        fastcgi_index index.php;
+
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+
+        # Laika reads the Authorization header for token guards
+        fastcgi_param HTTP_AUTHORIZATION $http_authorization;
+    }
+
+    access_log {{root}}/lf-logs/nginx-access.log;
+    error_log  {{root}}/lf-logs/nginx-error.log;
+}
