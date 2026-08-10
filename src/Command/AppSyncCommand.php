@@ -7,6 +7,7 @@ namespace Laika\Cli\Command;
 use Laika\Service\Infra;
 use Laika\Service\File;
 use Laika\Service\Directory;
+use Laika\Service\Resource;
 
 class AppSyncCommand implements CommandInterface
 {
@@ -74,6 +75,35 @@ class AppSyncCommand implements CommandInterface
             }
         }
 
+        // Deny Web Access To Private Directories. These are gitignored, so the
+        // guard cannot be shipped in the repository — it has to be created here.
+        // Note this only covers Apache; nginx needs an equivalent location block.
+        $private_ht_content = <<<HTCONTENT
+        <IfModule mod_authz_core.c>
+            Require all denied
+        </IfModule>
+        <IfModule !mod_authz_core.c>
+            Order allow,deny
+            Deny from all
+        </IfModule>
+        HTCONTENT;
+
+        foreach (['lf-storage', 'lf-cache'] as $private) {
+            $dir = "{$basePath}/{$private}";
+            Directory::make($dir);
+
+            $ht_file = "{$dir}/.htaccess";
+            if (File::exists($ht_file)) {
+                continue;
+            }
+
+            try {
+                File::write($private_ht_content, $ht_file);
+            } catch (\Throwable $th) {
+                Message::error($th->getMessage());
+            }
+        }
+
         // Create app.key File If Doesn't Exists
         $dir = "{$basePath}/lf-storage/keys";
         if (!is_dir($dir)) {
@@ -96,6 +126,17 @@ class AppSyncCommand implements CommandInterface
             }
 
             setPermission($file, 0600);
+        }
+
+        // Refresh The Resource Manifest If One Is In Use. The cache wipe above no
+        // longer touches it, but dependencies may have changed since it was built.
+        if (File::exists(Resource::manifestPath())) {
+            try {
+                Resource::cache();
+            } catch (\Throwable $th) {
+                Message::error($th->getMessage());
+                return 1;
+            }
         }
 
         Message::success("App Sync Successfull.");

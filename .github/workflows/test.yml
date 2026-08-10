@@ -42,3 +42,20 @@ jobs:
         run: |
           find src -name '*.php' -print0 | xargs -0 -n1 php -l
           php -l laika
+
+      # Install Dev Tooling
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      # Catches what the parser cannot: functions removed or deprecated in a
+      # later version, signatures that changed, behaviour flagged for removal.
+      - name: PHPCompatibility check (8.1-8.5)
+        run: vendor/bin/phpcs --standard=phpcs.xml --report=full
+
+      - name: Report result
+        if: success()
+        run: echo "### PHP ${{ matrix.php-version }} ✅ compatible" >> $GITHUB_STEP_SUMMARY
+
+      - name: Report result (failed)
+        if: failure()
+        run: echo "### PHP ${{ matrix.php-version }} ❌ failed" >> $GITHUB_STEP_SUMMARY

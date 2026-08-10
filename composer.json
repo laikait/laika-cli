@@ -1,16 +1,48 @@
 {
     "name": "laikait/laika-cli",
-    "description": "CLI generator tool for the Laika PHP MVC Framework",
+    "description": "CLI generator tool for the Laika PHP Framework",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "laika",
+        "cli",
+        "command line",
+        "command tool",
+        "php"
+    ],
+    "authors": [
+        {
+            "name": "Laika IT",
+            "email": "strblackhawk@gmail.com"
+        },
+        {
+            "name": "Showket Ahmed",
+            "email": "riyadhtayf@gmail.com"
+        }
+    ],
     "require": {
         "php": ">=8.1"
     },
     "require-dev": {
-        "composer/composer": "^2.0"
+        "composer/composer": "^2.0",
+        "squizlabs/php_codesniffer": "^4.0.2",
+        "phpcompatibility/php-compatibility": "dev-develop",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.1"
     },
     "autoload": {
-        "psr-4": { "Laika\\Cli\\": "src/" }
+        "psr-4": {
+            "Laika\\Cli\\": "src/"
+        }
     },
-    "bin": ["laika"]
+    "bin": [
+        "laika"
+    ],
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "scripts": {
+        "compat": "phpcs --standard=phpcs.xml --report=full"
+    }
 }

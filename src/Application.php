@@ -21,6 +21,11 @@ use Laika\Cli\Command\FilterListCommand;
 use Laika\Cli\Command\FilterMakeCommand;
 use Laika\Cli\Command\AppMigrateCommand;
 use Laika\Cli\Command\AppStartCommand;
+use Laika\Cli\Command\NginxMakeCommand;
+use Laika\Cli\Command\NginxServerCommand;
+use Laika\Cli\Command\ResourceListCommand;
+use Laika\Cli\Command\ResourceCacheCommand;
+use Laika\Cli\Command\ResourceClearCommand;
 use Laika\Cli\Command\ModelRemoveCommand;
 use Laika\Cli\Command\ServiceMakeCommand;
 use Laika\Cli\Command\ModelRenameCommand;
@@ -111,6 +116,15 @@ class Application
         // Secret
         $this->register(new SecretGenerateCommand());
         $this->register(new SecretFixCommand());
+
+        // Resource
+        $this->register(new ResourceListCommand());
+        $this->register(new ResourceCacheCommand());
+        $this->register(new ResourceClearCommand());
+
+        // Nginx
+        $this->register(new NginxMakeCommand());
+        $this->register(new NginxServerCommand());
 
         // App
         $this->register(new AppSyncCommand());
