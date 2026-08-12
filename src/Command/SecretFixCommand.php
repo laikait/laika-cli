@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Laika\Cli\Command;
 
 use Laika\Cli\Stub;
+use Laika\Service\AppKey;
 
 class SecretFixCommand implements CommandInterface
 {
@@ -20,15 +21,6 @@ class SecretFixCommand implements CommandInterface
             return 1;
         }
 
-        // Create app.key File If Doesn't Exists
-        $dir = "{$basePath}/lf-storage/keys";
-        if (!is_dir($dir)) {
-            mkdir($dir, recursive: true);
-            setPermission($dir, 0775);
-        }
-        $file = "{$dir}/app.key";
-        if (!is_file($file)) touch($file);
-
         // Get Byte Number
         $byte = Argument::getValue('byte', $args, '32');
 
@@ -43,35 +35,15 @@ class SecretFixCommand implements CommandInterface
             return 1;
         }
 
-        // Create If Not Valid
-        $key = base64_decode((string) file_get_contents($file));
-        $newkey = base64_encode(bin2hex(random_bytes(16)) . '-' . bin2hex(random_bytes((int) $byte)));
-
-        // Generate Key if Existing Key Not Found
-        if (!$key) {
-            setPermission($file, 0640);
-            file_put_contents($file, $newkey);
+        try {
+            if (AppKey::validate((int) $byte)) {
+                Message::info("The secret key remains unchanged");
+                return 0;
+            }
+        } catch (\Throwable $th) {
+            AppKey::generate((int) $byte);
             Message::success("{$byte} byte secret key generated successfully");
-            return 0;
         }
-
-        // Generate Key if Key is Invalid
-        $parts = explode('-', $key);
-        if ((count($parts) != 2)) {
-            setPermission($file, 0600);
-            file_put_contents($file, $newkey);
-            Message::success("{$byte} byte secret key regenerated successfully");
-            return 0;
-        }
-        if (strlen($parts[1]) != $byte * 2) {
-            setPermission($file, 0600);
-            file_put_contents($file, $newkey);
-            Message::success("{$byte} byte secret key regenerated successfully");
-            return 0;
-        }
-
-        Message::info("Secret key remains unchanged");
-
         return 0;
     }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Laika\Cli\Command;
 
 use Laika\Cli\Stub;
+use Laika\Service\AppKey;
 
 class SecretGenerateCommand implements CommandInterface
 {
@@ -19,15 +20,6 @@ class SecretGenerateCommand implements CommandInterface
             Message::suggestion($this->command());
             return 1;
         }
-
-        // Create app.key File If Doesn't Exists
-        $dir = "{$basePath}/lf-storage/keys";
-        if (!is_dir($dir)) {
-            mkdir($dir, recursive: true);
-            setPermission($dir, 0775);
-        }
-        $file = "{$dir}/app.key";
-        if (!is_file($file)) touch($file);
 
         // Get Byte Number
         $byte = Argument::getValue('byte', $args, '32');
@@ -44,16 +36,12 @@ class SecretGenerateCommand implements CommandInterface
         }
 
         // Generate Key
-        $key = base64_encode(bin2hex(random_bytes(16)) . '-' . bin2hex(random_bytes((int) $byte)));
         try {
-            setPermission($file, 0640);
-            file_put_contents($file, $key);
+            AppKey::generate((int) $byte);
         } catch (\Throwable $th) {
             Message::error($th->getMessage());
             return 1;
         }
-
-        setPermission($file, 0600);
         Message::success("{$byte} Byte Secret Key Generated Successfully");
 
         return 0;

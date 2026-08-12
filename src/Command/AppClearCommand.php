@@ -6,11 +6,11 @@ namespace Laika\Cli\Command;
 
 use Laika\Service\Resource;
 
-class ResourceClearCommand implements CommandInterface
+class AppClearCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'resource:clear';
+        return 'app:clear';
     }
 
     public function handle(array $args, string $basePath): int
@@ -38,7 +38,7 @@ class ResourceClearCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika resource:clear";
+        return "php laika app:clear";
     }
 
     public function help(): array
