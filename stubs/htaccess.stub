@@ -1,0 +1,14 @@
+##################################################################
+############## PLEASE DO NOT EDIT AFTER THIS LINE ################
+##################################################################
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
+##################################################################
+################## YOU CAN ADD AFTER THIS LINE ###################
+##################################################################

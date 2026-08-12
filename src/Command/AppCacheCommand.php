@@ -7,11 +7,11 @@ namespace Laika\Cli\Command;
 use Throwable;
 use Laika\Service\Resource;
 
-class ResourceCacheCommand implements CommandInterface
+class AppCacheCommand implements CommandInterface
 {
     public function signature(): string
     {
-        return 'resource:cache';
+        return 'app:cache';
     }
 
     public function handle(array $args, string $basePath): int
@@ -46,7 +46,7 @@ class ResourceCacheCommand implements CommandInterface
 
     public function command(): string
     {
-        return "php laika resource:cache";
+        return "php laika app:cache";
     }
 
     public function help(): array

@@ -24,8 +24,8 @@ use Laika\Cli\Command\AppStartCommand;
 use Laika\Cli\Command\NginxMakeCommand;
 use Laika\Cli\Command\NginxServerCommand;
 use Laika\Cli\Command\ResourceListCommand;
-use Laika\Cli\Command\ResourceCacheCommand;
-use Laika\Cli\Command\ResourceClearCommand;
+use Laika\Cli\Command\AppCacheCommand;
+use Laika\Cli\Command\AppClearCommand;
 use Laika\Cli\Command\ModelRemoveCommand;
 use Laika\Cli\Command\ServiceMakeCommand;
 use Laika\Cli\Command\ModelRenameCommand;
@@ -119,8 +119,8 @@ class Application
 
         // Resource
         $this->register(new ResourceListCommand());
-        $this->register(new ResourceCacheCommand());
-        $this->register(new ResourceClearCommand());
+        $this->register(new AppCacheCommand());
+        $this->register(new AppClearCommand());
 
         // Nginx
         $this->register(new NginxMakeCommand());
