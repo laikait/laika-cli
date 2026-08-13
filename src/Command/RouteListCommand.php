@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
+use Laika\Cli\Contracts\CommandInterface;
 use Laika\Cli\Table;
 use Laika\Route\Path;
 use Laika\Route\Handler;

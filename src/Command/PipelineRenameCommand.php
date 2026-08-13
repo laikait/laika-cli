@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
+use Laika\Cli\Contracts\CommandInterface;
 class PipelineRenameCommand implements CommandInterface
 {
     public function signature(): string

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
+use Laika\Cli\Contracts\CommandInterface;
 use Laika\Cli\Stub;
 use Laika\Service\Infra;
 

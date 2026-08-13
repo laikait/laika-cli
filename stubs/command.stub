@@ -1,0 +1,61 @@
+<?php
+/**
+ * Laika Framework
+ * Author: Showket Ahmed
+ * Email: riyadhtayf@gmail.com
+ * License: MIT
+ * This file is part of the Laika PHP Framework.
+ * For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
+namespace App\Command;
+
+use Laika\Cli\Contracts\CommandInterface;
+use Laika\Cli\Command\Message;
+
+class {{class}} implements CommandInterface
+{
+    /**
+     * How the command is invoked: php laika {{signature}}
+     */
+    public function signature(): string
+    {
+        return '{{signature}}';
+    }
+
+    /**
+     * @param array $args Arguments after the signature
+     * @param string $basePath Project root
+     * @return int 0 on success, non-zero on failure
+     */
+    public function handle(array $args, string $basePath): int
+    {
+        Message::success('{{signature}} ran.');
+
+        return 0;
+    }
+
+    /**
+     * Usage line shown when the command is called incorrectly
+     */
+    public function command(): string
+    {
+        return "php laika {{signature}}";
+    }
+
+    /**
+     * Entry for php laika help
+     */
+    public function help(): array
+    {
+        return [
+            'signature'     =>  $this->signature(),
+            'description'   =>  '{{description}}',
+            'command'       =>  $this->command(),
+            'inputs'        =>  [],
+            'params'        =>  [],
+        ];
+    }
+}

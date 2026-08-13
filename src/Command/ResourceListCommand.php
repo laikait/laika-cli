@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
+use Laika\Cli\Contracts\CommandInterface;
 use Throwable;
 use Laika\Cli\Table;
 use Laika\Service\Resource;

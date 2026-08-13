@@ -13,7 +13,7 @@ use Laika\Cli\Command\RouteListCommand;
 use Laika\Cli\Command\RouteMakeCommand;
 use Laika\Cli\Command\ModelListCommand;
 use Laika\Cli\Command\ModelMakeCommand;
-use Laika\Cli\Command\CommandInterface;
+use Laika\Cli\Contracts\CommandInterface;
 use Laika\Cli\Command\SecretFixCommand;
 use Laika\Cli\Command\RelayListCommand;
 use Laika\Cli\Command\SchemaListCommand;
@@ -51,6 +51,7 @@ use Laika\Cli\Command\QueueWorkCommand;
 use Laika\Cli\Command\QueueFailedCommand;
 use Laika\Cli\Command\QueueRetryCommand;
 use Laika\Cli\Command\QueueFlushCommand;
+use Laika\Cli\Command\CommandMakeCommand;
 
 foreach (Infra::getFunctionFiles() as $file) require_once $file;
 
@@ -126,10 +127,19 @@ class Application
         $this->register(new NginxMakeCommand());
         $this->register(new NginxServerCommand());
 
+        // Command
+        $this->register(new CommandMakeCommand());
+
         // App
         $this->register(new AppSyncCommand());
         $this->register(new AppMigrateCommand());
         $this->register(new AppStartCommand());
+
+        // Commands the application defines in lf-app/Command
+        $this->registerAppCommands();
+
+        // Help lists whatever ended up registered, app commands included
+        $this->commands['help']->setCommands($this->commands);
     }
 
     protected function register(CommandInterface $command): void
@@ -137,9 +147,46 @@ class Application
         $this->commands[$command->signature()] = $command;
     }
 
-    ######################################################################################
-    /*################################## EXTERNAL API ##################################*/
-    ######################################################################################
+    /**
+     * Discover & Register App Commands From lf-app/Command
+     *
+     * Built-ins always win: an app command whose signature is already taken is
+     * skipped with a warning rather than replacing a core command. Discovery
+     * failures never abort the CLI — a broken command file would otherwise take
+     * down `php laika help`, the very command you'd reach for to debug it.
+     * @return void
+     */
+    protected function registerAppCommands(): void
+    {
+        try {
+            $classes = Infra::get('commands', CommandInterface::class);
+        } catch (\Throwable $th) {
+            Message::error("Skipped lf-app/Command: {$th->getMessage()}");
+            return;
+        }
+
+        foreach ($classes as $class) {
+            try {
+                $command = new $class();
+            } catch (\Throwable $th) {
+                Message::error("Command [{$class}] could not be created: {$th->getMessage()}");
+                continue;
+            }
+
+            $signature = $command->signature();
+
+            if (isset($this->commands[$signature])) {
+                Message::error("Command [{$class}] skipped: signature [{$signature}] is already taken.");
+                continue;
+            }
+
+            $this->register($command);
+        }
+    }
+
+    ############################################################################
+    /*############################# EXTERNAL API #############################*/
+    ############################################################################
     public function run(array $argv): int
     {
         $command = implode(' ', $argv);
