@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Laika\Cli\Command;
 
 use Laika\Cli\Table;
-use Laika\Cli\QueueResolver;
+use Laika\Core\Worker\Queue;
 
 class QueueFailedCommand implements CommandInterface
 {
@@ -24,7 +24,7 @@ class QueueFailedCommand implements CommandInterface
         $queue = Argument::getValue('queue', $args);
 
         try {
-            $failed = QueueResolver::failedProvider()->all($queue ?: null);
+            $failed = Queue::failedProvider('database')->all($queue ?: null);
         } catch (\Throwable $th) {
             Message::error($th->getMessage());
             return 1;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
-use Laika\Cli\QueueResolver;
 use Laika\Service\Infra;
+use Laika\Core\Worker\Queue;
 use Laika\Queue\Abstracts\Job;
 
 class QueueRetryCommand implements CommandInterface
@@ -38,8 +38,8 @@ class QueueRetryCommand implements CommandInterface
             // under lf-app/Job here too, same as bin/worker does on start.
             Job::registerTrustedClasses(Infra::getQueueJobsClasses());
 
-            $failer = QueueResolver::failedProvider();
-            $driver = QueueResolver::driver();
+            $failer = Queue::failedProvider('database');
+            $driver = Queue::driver('database');
         } catch (\Throwable $th) {
             Message::error($th->getMessage());
             return 1;
