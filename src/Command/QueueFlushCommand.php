@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
-use Laika\Cli\QueueResolver;
+use Laika\Core\Worker\Queue;
 
 class QueueFlushCommand implements CommandInterface
 {
@@ -36,7 +36,7 @@ class QueueFlushCommand implements CommandInterface
         }
 
         try {
-            QueueResolver::failedProvider()->flush($hours !== null ? (int) $hours : null);
+            Queue::failedProvider('database')->flush($hours !== null ? (int) $hours : null);
             Message::success($hours ? "Cleared failed jobs older than {$hours} hour(s)." : "Cleared all failed jobs.");
         } catch (\Throwable $th) {
             Message::error($th->getMessage());
