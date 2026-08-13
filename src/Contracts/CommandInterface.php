@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Laika\Cli\Command;
+namespace Laika\Cli\Contracts;
 
 interface CommandInterface
 {

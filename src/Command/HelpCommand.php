@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
+use Laika\Cli\Contracts\CommandInterface;
 use Laika\Service\Directory;
 
 class HelpCommand implements CommandInterface
@@ -21,9 +22,27 @@ class HelpCommand implements CommandInterface
         'generate', 'fix', 'work', 'failed', 'retry', 'flush',
     ];
 
+    /**
+     * The registry Application built, app commands included.
+     * Null falls back to scanning this directory, so a standalone
+     * HelpCommand still lists the built-ins.
+     * @var ?CommandInterface[]
+     */
+    protected ?array $registry = null;
+
     public function signature(): string
     {
         return 'help';
+    }
+
+    /**
+     * Hand Help The Commands That Actually Got Registered
+     * @param CommandInterface[] $commands
+     * @return void
+     */
+    public function setCommands(array $commands): void
+    {
+        $this->registry = $commands;
     }
 
     public function handle(array $args, string $basePath): int
@@ -59,12 +78,28 @@ class HelpCommand implements CommandInterface
      */
     protected function discover(): array
     {
+        $list = [];
+
+        if ($this->registry !== null) {
+            foreach ($this->registry as $command) {
+                if (!method_exists($command, 'help')) {
+                    continue;
+                }
+                $list[] = $command->help();
+            }
+
+            usort($list, fn ($a, $b) => $a['signature'] <=> $b['signature']);
+            return $list;
+        }
+
         $files = Directory::files(__DIR__);
         $classes = array_map(fn ($f) => "\\Laika\\Cli\\Command\\" . pathinfo($f, PATHINFO_FILENAME), $files);
 
-        $list = [];
         foreach ($classes as $c) {
-            if ($c === '\Laika\Cli\Command\CommandInterface' || !method_exists($c, 'help')) {
+            // class_exists() is false for interfaces, so a contract living in
+            // this directory is skipped without naming it — method_exists()
+            // alone would pass, since an interface declares help() too.
+            if (!class_exists($c) || !method_exists($c, 'help')) {
                 continue;
             }
             $list[] = (new $c())->help();
