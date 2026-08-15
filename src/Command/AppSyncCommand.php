@@ -26,7 +26,9 @@ class AppSyncCommand implements CommandInterface
             return 1;
         }
 
-        foreach (Directory::scan("{$basePath}/lf-cache", true, 'php') as $f) {
+        $cache_dir = $basePath . DS . 'lf-storage' . DS . 'cache';
+        Directory::make($cache_dir);
+        foreach (Directory::scan($cache_dir, true, 'php') as $f) {
             try {
                 if (File::exists($f)) {
                     File::pop($f);
@@ -83,8 +85,7 @@ class AppSyncCommand implements CommandInterface
 
         // Refresh The Resource Manifest If One Is In Use. The cache wipe above no
         // longer touches it, but dependencies may have changed since it was built.
-        $cache_dir = $basePath . DS . 'lf-storage' . DS . 'cache';
-        Directory::make($cache_dir);
+        
         // Create Manifest Path if Doesn't Exists
         if (!File::exists(Resource::manifestPath())) File::touch(Resource::manifestPath());
         try {
