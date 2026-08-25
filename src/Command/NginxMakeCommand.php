@@ -27,7 +27,7 @@ class NginxMakeCommand implements CommandInterface
         $print = Argument::getBool('print', $args);
         $force = Argument::getBool('force', $args);
 
-        $file = "{$basePath}/nginx.conf";
+        $file = "{$basePath}" . DIRECTORY_SEPARATOR . "nginx.conf";
         $content = Stub::load('nginx');
 
         // Carry the user's own rules across, unless asked to reset them
@@ -51,9 +51,12 @@ class NginxMakeCommand implements CommandInterface
         }
 
         Message::success('nginx.conf written.');
-        Message::info('Include it inside your server block, above any "location ~ \.php$" handler:');
-        Message::info("    include {$basePath}/nginx.conf;");
-        Message::info('Run `php laika nginx:server` for a complete server block, then `nginx -t` before reloading.');
+        Message::info('Include it inside your server block, above the PHP handler:');
+        $include = "include {$basePath}" . DIRECTORY_SEPARATOR . "nginx.conf";
+        Message::info($include);
+        Message::info('The server block MUST define "location = /index.php" -- this file rewrites');
+        Message::info('every request there, and without that handler the rewrite loops.');
+        Message::info('Run `php laika nginx:server` for a server block that already does, then `nginx -t`.');
 
         return 0;
     }

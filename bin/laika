@@ -8,9 +8,11 @@ use Laika\Cli\Application;
  *
  * This file runs in two very different contexts:
  *
- *  1. Local install — required from the project's own root "laika" proxy
- *     (vendor/laikait/laika-cli/laika). The project root is always three
- *     levels above this file, regardless of the current working directory.
+ *  1. Local install — vendor/laikait/laika-cli/bin/laika, either via the
+ *     project's own root "laika" proxy or Composer's generated
+ *     vendor/bin/laika proxy (both plain includes, so __DIR__ here is
+ *     unaffected). 4 levels up from bin/ is the app root, where
+ *     lf-boot/app.php lives.
  *
  *  2. Global install — invoked as `laika` from anywhere on the system after
  *     `composer global require laikait/laika-cli`. This file then lives
@@ -19,7 +21,7 @@ use Laika\Cli\Application;
  *     directory until a Laika project (lf-boot/app.php) is found.
  */
 if (!defined('APP_PATH')) {
-    $local = realpath(__DIR__ . '/../../../');
+    $local = realpath(__DIR__ . '/../../../../');
 
     if ($local && is_file($local . '/lf-boot/app.php')) {
         define('APP_PATH', $local);

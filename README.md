@@ -40,11 +40,17 @@ run.
 | File | Platform | How you run it |
 | --- | --- | --- |
 | `laika` | all | `php laika help` — or `./laika help` on Linux/macOS |
-| `laika.bat` | Windows only | `laika help` in cmd, `.\laika help` in PowerShell |
 
-Both are thin proxies into `vendor/laikait/laika-cli`, so they always match
-the version this project has installed. They are rewritten only when their
-content actually changes, and regenerate if you delete them.
+One file, the same on every platform. It is a thin proxy into
+`vendor/laikait/laika-cli`, so it always matches the version this project has
+installed. It is rewritten only when its content actually changes, and
+regenerates if you delete it.
+
+> **Windows:** run it as `php laika ...`, not a bare `laika ...`. There is
+> deliberately no `laika.bat` shim — cmd and PowerShell resolve commands
+> through `PATHEXT` and will never execute an extensionless file. A `laika.bat`
+> left over from an earlier version is deleted on the next `composer install`.
+> If you want a bare `laika` command on Windows, use the global install below.
 
 > Versions before 3.0 shipped this package as a Composer *plugin*, which
 > required an `allow-plugins` entry in every consuming project. That is no
@@ -65,6 +71,10 @@ laika model:make User
 ```
 The global binary detects the current project by walking up from your
 working directory until it finds `lf-boot/app.php` — no `php` prefix needed.
+
+This is the one case where a bare `laika` does work on Windows: the shims in
+Composer's global `vendor/bin` are built by Composer itself, not by this
+package, and it still writes a `.bat` there.
 
 ## Usage
 ```bash

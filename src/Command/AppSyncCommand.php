@@ -26,7 +26,17 @@ class AppSyncCommand implements CommandInterface
             return 1;
         }
 
-        $cache_dir = $basePath . DS . 'lf-storage' . DS . 'cache';
+        // Storage Link
+        $storage_path = $basePath . DS . 'lf-storage';
+
+        if (!is_file($storage_path . DS . '.htaccess')) {
+            File::touch($storage_path . DS . '.htaccess');
+            File::write('Deny from all', $storage_path . DS . '.htaccess');
+            @chmod($storage_path . DS . '.htaccess', 644);
+        }
+
+        // Cache Dir
+        $cache_dir = $storage_path . DS . 'cache';
         Directory::make($cache_dir);
         foreach (Directory::scan($cache_dir, true, 'php') as $f) {
             try {
@@ -53,24 +63,6 @@ class AppSyncCommand implements CommandInterface
                 Stub::write($app_ht_file, $content);
             } catch (\Throwable $th) {
                 Message::error($th->getMessage());
-                return 1;
-            }
-        }
-
-        // Sync Deny Directories HTASCCESS
-        $dirs = ['lf-app', 'lf-boot', 'lf-cache', 'lf-config', 'lf-hooks', 'lf-inc', 'lf-lang', 'lf-logs', 'lf-routes', 'lf-storage'];
-        $hc = Stub::load('htaccess-deny');
-        foreach ($dirs as $d) {
-            $dir = $basePath . DS . $d;
-            $ht_file = $dir . DS . '.htaccess';
-            // Make Directory If Doesn't Exists
-            Directory::make($dir);
-            if (File::exists($ht_file)) continue;
-            try {
-                Stub::write($ht_file, $hc);
-                setPermission($ht_file, 0640);
-            } catch (\Throwable $e) {
-                Message::error($e->getMessage());
                 return 1;
             }
         }
