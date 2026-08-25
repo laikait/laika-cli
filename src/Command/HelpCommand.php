@@ -19,7 +19,7 @@ class HelpCommand implements CommandInterface
      */
     protected const VERBS = [
         'list', 'make', 'remove', 'rename', 'migrate', 'start', 'sync',
-        'generate', 'fix', 'work', 'failed', 'retry', 'flush',
+        'generate', 'fix', 'work', 'failed', 'retry', 'flush', 'cache', 'clear', 'server',
     ];
 
     /**

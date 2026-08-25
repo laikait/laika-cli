@@ -15,22 +15,23 @@ server {
 
     client_max_body_size {{upload}};
 
-    # Framework-managed rules (deny lists, try_files). Regenerate with
-    # `php laika nginx:make`. This include MUST stay above the PHP handler
-    # below -- nginx uses the first matching regex location, so the deny
-    # rules only take effect if they are seen first.
+    # Framework-managed rules (deny lists, front-controller rewrite).
+    # Regenerate with `php laika nginx:make`. Keep this include above the
+    # handler below: the deny rules are regex locations and nginx uses the
+    # first matching one, so they must be seen first.
     include {{root}}/nginx.conf;
 
-    location ~ \.php$ {
-        try_files $uri =404;
-
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    # The only PHP that is ever executed. An exact-match location cannot be
+    # reached by /uploads/evil.php or /template/loader.php, so no file other
+    # than the front controller can be run even if one is written into a
+    # served directory. It also terminates the rewrite in nginx.conf --
+    # without this block that rewrite loops.
+    location = /index.php {
         fastcgi_pass {{fastcgi}};
         fastcgi_index index.php;
 
         include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_param SCRIPT_FILENAME $document_root/index.php;
 
         # Laika reads the Authorization header for token guards
         fastcgi_param HTTP_AUTHORIZATION $http_authorization;
