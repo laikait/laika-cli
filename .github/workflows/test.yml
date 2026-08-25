@@ -41,7 +41,7 @@ jobs:
       - name: Lint PHP syntax
         run: |
           find src -name '*.php' -print0 | xargs -0 -n1 php -l
-          php -l laika
+          php -l bin/laika
 
       # Install Dev Tooling
       # --prefer-dist pulls zipballs from api.github.com and disables source
