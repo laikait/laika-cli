@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Laika\Cli\Command;
 
-use Laika\Cli\Contracts\CommandInterface;
 use Throwable;
 use Laika\Cli\Table;
 use Laika\Service\Resource;
+use Laika\Cli\Contracts\CommandInterface;
 
 class ResourceListCommand implements CommandInterface
 {
@@ -88,7 +88,9 @@ class ResourceListCommand implements CommandInterface
             try {
                 Resource::getClasses($name);
             } catch (Throwable $e) {
-                Message::error("[{$name}] " . $e->getMessage());
+                $message = (defined('DEBUG') && DEBUG) ?
+                        Message::error("[{$name}] " . $e->getMessage()) :
+                        Message::error("[{$name}] {$e->getMessage()} [File: {$e->getFile()}. Line: {$e->getLine()}]");
                 $broken++;
             }
         }
