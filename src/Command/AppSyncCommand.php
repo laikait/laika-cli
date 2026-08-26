@@ -28,6 +28,7 @@ class AppSyncCommand implements CommandInterface
 
         // Storage Link
         $storage_path = $basePath . DS . 'lf-storage';
+        Directory::make($storage_path);
 
         if (!is_file($storage_path . DS . '.htaccess')) {
             File::touch($storage_path . DS . '.htaccess');
