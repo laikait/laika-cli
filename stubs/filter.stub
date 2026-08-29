@@ -17,6 +17,15 @@ use Laika\Route\Contracts\FilterInterface;
 class {{class}} implements FilterInterface
 {
     /**
+     * Dependencies Are Injected Here
+     *
+     * Type hint what this filter needs and the container builds it. A concrete
+     * class needs no registration; an interface must be bound in a RelayProvider.
+     *
+     * public function __construct(private LoggerService $log) {}
+     */
+
+    /**
      * @param callable $next
      * @param ?string $response
      * @param array $params
