@@ -17,6 +17,15 @@ use Laika\Route\Contracts\PipelineInterface;
 class {{class}} implements PipelineInterface
 {
     /**
+     * Dependencies Are Injected Here
+     *
+     * Type hint what this pipeline needs and the container builds it. A concrete
+     * class needs no registration; an interface must be bound in a RelayProvider.
+     *
+     * public function __construct(private AuthService $auth) {}
+     */
+
+    /**
      * @param callable $next
      * @param array $params
      * @return ?string
