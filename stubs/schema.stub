@@ -33,7 +33,9 @@ class {{class}} extends SchemaAbstract
             $t->string('{{uid}}');
             $t->timestamps();
             $t->enum('deleted', ['yes', 'no'])->default('no');
-            $t->timestamp('deleted_at')->nullable();
+            // default(null): timestamp() defaults to CURRENT_TIMESTAMP, which
+            // would mark every new row as soft-deleted
+            $t->timestamp('deleted_at')->nullable()->default(null);
 
             $t->index('deleted');
         });
@@ -43,6 +45,12 @@ class {{class}} extends SchemaAbstract
     {
         try {
             $model = new {{model}}();
+
+            // app:migrate runs seed() every time, so only seed an empty table
+            if ($model->withTrash()->exists()) {
+                return;
+            }
+
             $arr = [
                 '{{uid}}'       =>  $model->uid(),
                 'deleted'   =>  'yes'

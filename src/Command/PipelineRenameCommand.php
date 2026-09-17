@@ -30,7 +30,7 @@ class PipelineRenameCommand implements CommandInterface
         }
 
         // Check Valid Names
-        if (!preg_match('/^[a-z_]+$/i', $old) || !preg_match('/^[a-z_]+$/i', $old)) {
+        if (!preg_match('/^[a-z_]+$/i', $old) || !preg_match('/^[a-z_]+$/i', $new)) {
             Message::error("Old/New Name Should Contain Characters Only!");
             return 1;
         }
