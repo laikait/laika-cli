@@ -22,6 +22,12 @@ class PipelineRemoveCommand implements CommandInterface
         // Get Pipeline Name
         $pipeline = $args[0];
 
+        // Validate Pipeline Name. Unchecked, `pipeline:remove ../../index` deleted index.php
+        if (!preg_match('/^[a-z_]+$/i', $pipeline)) {
+            Message::error("Invalid pipeline name [{$pipeline}]!");
+            return 1;
+        }
+
         $path = $basePath . "/lf-app/Pipeline/{$pipeline}.php";
 
         // Check Old Pipeline Exists

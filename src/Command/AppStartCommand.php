@@ -39,7 +39,16 @@ class AppStartCommand implements CommandInterface
         echo "Laika development server started: http://{$host}:{$port}\n";
         echo "Press Ctrl+C to stop.\n\n";
 
-        $command = sprintf('php -S %s:%s', escapeshellarg($host), escapeshellarg((string) $port));
+        // index.php as the router script sends every request through the app,
+        // as Apache and nginx do. Without it the built-in server handed out any
+        // file under the project root as-is: lf-storage/keys/app.key, composer.json.
+        $command = sprintf(
+            '%s -S %s -t %s %s',
+            escapeshellarg(PHP_BINARY),
+            escapeshellarg("{$host}:{$port}"),
+            escapeshellarg($basePath),
+            escapeshellarg($basePath . DIRECTORY_SEPARATOR . 'index.php')
+        );
 
         passthru($command, $exitCode);
 

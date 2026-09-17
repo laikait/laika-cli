@@ -22,10 +22,9 @@ class ControllerMakeCommand implements CommandInterface
         }
 
         $name = $args[0];
-        $method = Argument::getValue('method', $args, 'index');
+        $method = (string) Argument::getValue('method', $args, 'index');
 
         // Validate Controller Name & Method
-        $name = $args[0];
         if (empty($name)) {
             Message::error("Controller name should not be empty.");
             return 1;
@@ -38,8 +37,9 @@ class ControllerMakeCommand implements CommandInterface
             Message::error("Method name should not be empty.");
             return 1;
         }
-        if (!preg_match('/^[a-z_]+$/i', $name)) {
-            Message::error("Invalid method name [{$name}].");
+        // Checked $name a second time before, so any --method went straight into the stub
+        if (!preg_match('/^[a-z_][a-z0-9_]*$/i', $method)) {
+            Message::error("Invalid method name [{$method}].");
             return 1;
         }
 

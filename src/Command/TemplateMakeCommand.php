@@ -37,7 +37,8 @@ class TemplateMakeCommand implements CommandInterface
             return 1;
         }
 
-        if (!preg_match('/^html|twig$/i', $ext)) {
+        // Grouped: '/^html|twig$/' also accepted "htmlx" and "xtwig"
+        if (!preg_match('/^(html|twig)$/i', $ext)) {
             Message::error("Invalid extension [{$ext}]. Accepted extensions are 'html' and 'twig'.");
             return 1;
         }

@@ -61,6 +61,14 @@ class ModelRenameCommand implements CommandInterface
             $id = strtolower(Argument::getValue('--id', $args, $obj->id));
             $uid = strtolower(Argument::getValue('--uid', $args, $obj->uid));
 
+            // Validate: these are written into the model's source as quoted strings
+            foreach (['table' => $table, 'id' => $id, 'uid' => $uid] as $key => $value) {
+                if (!preg_match('/^[a-z_][a-z0-9_]*$/', $value)) {
+                    Message::error("Invalid {$key} name [{$value}]!");
+                    return 1;
+                }
+            }
+
             // Get Model Content
             $content = file_get_contents($oldModelPath);
 

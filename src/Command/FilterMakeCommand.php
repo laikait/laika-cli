@@ -23,7 +23,8 @@ class FilterMakeCommand implements CommandInterface
 
         // Validate Filter Name
         $name = $args[0];
-        if (!preg_match('/[a-z_]/i', $name)) {
+        // Anchored: unanchored, one letter anywhere passed ("../x" included)
+        if (!preg_match('/^[a-z_]+$/i', $name)) {
             Message::error("Invalid filter name: [{$name}]!");
             return 1;
         }
