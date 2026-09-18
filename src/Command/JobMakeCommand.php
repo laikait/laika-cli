@@ -88,7 +88,7 @@ class JobMakeCommand implements CommandInterface
             'inputs'        =>  ['name' => 'Job class name'],
             'params'        =>  [
                                     'queue'     =>  'Queue name the job belongs to',
-                                    'maxTries'  =>  'Maximum retry attempts',
+                                    'max'       =>  'Maximum attempts, sets $maxTries',
                                 ]
         ];
     }
